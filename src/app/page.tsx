@@ -320,6 +320,46 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Family Photo Scroll */}
+      <section className="bg-warm-white pt-16 overflow-hidden">
+        <div className="text-center mb-6">
+          <p className="text-rose/70 text-xs tracking-[0.4em] uppercase">The Heart Behind the Bakes</p>
+        </div>
+        <div className="relative">
+          <div className="flex gap-4 animate-marquee-reverse w-max">
+            {[
+              "/images/family-1.jpg",
+              "/images/family-2.jpg",
+              "/images/family-3.jpg",
+              "/images/family-4.jpg",
+              "/images/family-6.jpg",
+              "/images/family-7.jpg",
+              "/images/family-about.jpg",
+              "/images/family.jpg",
+              // duplicated for seamless loop
+              "/images/family-1.jpg",
+              "/images/family-2.jpg",
+              "/images/family-3.jpg",
+              "/images/family-4.jpg",
+              "/images/family-6.jpg",
+              "/images/family-7.jpg",
+              "/images/family-about.jpg",
+              "/images/family.jpg",
+            ].map((src, i) => (
+              <div key={i} className="relative h-72 w-64 shrink-0 overflow-hidden">
+                <Image
+                  src={src}
+                  alt="The family behind Little Charlie's Bakeshop"
+                  fill
+                  sizes="256px"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* About Teaser */}
       <section className="py-20 px-6 bg-warm-white">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-12">
