@@ -9,6 +9,7 @@ const links = [
   { href: "/menu", label: "Seasonal Menu" },
   { href: "/shop", label: "Shop" },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
   { href: "/follow", label: "Follow" },
 ];
 
