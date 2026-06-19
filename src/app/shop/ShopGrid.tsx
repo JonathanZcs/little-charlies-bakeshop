@@ -96,8 +96,8 @@ const products = [
     name: "Sourdough Starter",
     price: "$5.00",
     category: "Sourdough",
-    image: null,
-    emoji: "🫧",
+    image: "/images/sourdough-starter.jpg",
+    emoji: null,
     link: "http://www.littlecharliesbakeshop.com/store/p377/sourdough_starter.html",
   },
 ];
