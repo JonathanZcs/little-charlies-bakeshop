@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,9 +24,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Wire up email sending (e.g. Resend, SendGrid, Nodemailer)
-    // For now, log the inquiry server-side
-    console.log("New inquiry from:", name, phone, email);
+    await resend.emails.send({
+      from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
+      to: "littlecharliesbakeshop@hotmail.com",
+      subject: `New Order Inquiry from ${name}`,
+      html: `
+        <h2>New Order Inquiry</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Inquiry:</strong></p>
+        <p>${inquiry.replace(/\n/g, "<br>")}</p>
+      `,
+    });
 
     return NextResponse.json({ success: true });
   } catch {
