@@ -30,7 +30,7 @@ const products = [
   },
   {
     name: "4pk Poptart",
-    price: "$14.00",
+    price: "$16.00",
     category: "Baked Goods",
     image: "/images/poptarts.jpg",
     emoji: null,
@@ -86,7 +86,7 @@ const products = [
   },
   {
     name: "Choc. Chip Banana Bread Loaf w/ Walnuts",
-    price: "$13.00",
+    price: "$18.00",
     category: "Baked Goods",
     image: "/images/banana-bread.jpg",
     emoji: null,
