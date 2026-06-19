@@ -33,7 +33,7 @@ export default function AboutPage() {
           <div className="relative">
             <div className="relative h-96 md:h-130 overflow-hidden border border-parchment">
               <Image
-                src="/images/alexis-baking.jpg"
+                src="/images/family-about.jpg"
                 alt="Alexis baking in her kitchen"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
