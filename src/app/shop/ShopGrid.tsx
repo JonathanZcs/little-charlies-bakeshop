@@ -8,8 +8,8 @@ const products = [
     name: "Mommy & Me Cinnamon Roll Class",
     price: "$60.00",
     category: "Classes",
-    image: null,
-    emoji: "👩‍🍳",
+    image: "/images/mommy-me-cinnamon-roll-class.webp",
+    emoji: null,
     link: "http://www.littlecharliesbakeshop.com/store/p389/Mommy_%26_me_cinnamon_roll_class.html",
   },
   {

@@ -7,25 +7,25 @@ const featuredItems = [
     name: "French Macarons",
     desc: "Delicate almond shells with creamy seasonal fillings",
     price: "$18 / 6pk",
-    emoji: "🎀",
+    image: "/images/macarons.jpg",
   },
   {
     name: "Jumbo Brownies",
     desc: "Rich, fudgy chocolate brownies with crispy edges",
     price: "$20 / 4pk",
-    emoji: "🍫",
+    image: "/images/brownie-4pk.jpg",
   },
   {
     name: "Sourdough Loaf",
     desc: "Artisan slow-fermented sourdough with a golden crust",
     price: "$12",
-    emoji: "🍞",
+    image: "/images/sourdough-loaf.jpg",
   },
   {
     name: "Decorated Cookies",
     desc: "Beautifully hand-decorated sugar cookies for any occasion",
     price: "Seasonal",
-    emoji: "🍪",
+    image: "/images/decorated-sugar-cookies-1.jpg",
   },
 ];
 
@@ -140,21 +140,30 @@ export default function Home() {
             {featuredItems.map((item) => (
               <div
                 key={item.name}
-                className="bg-cream p-7 text-center border border-parchment hover:border-rose/40 hover:shadow-md transition-all"
+                className="bg-cream border border-parchment hover:border-rose/40 hover:shadow-md transition-all overflow-hidden group"
               >
-                <div className="w-14 h-14 bg-blush mx-auto mb-4 flex items-center justify-center text-3xl border border-parchment/60">
-                  {item.emoji}
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-mocha/10" />
                 </div>
-                <h3 className="font-serif text-lg text-mocha font-semibold mb-2">
-                  {item.name}
-                </h3>
-                <div className="w-6 h-px bg-parchment mx-auto mb-2" />
-                <p className="text-brown text-sm leading-relaxed mb-3">
-                  {item.desc}
-                </p>
-                <span className="text-rose text-sm font-semibold">
-                  {item.price}
-                </span>
+                <div className="p-6 text-center">
+                  <h3 className="font-serif text-lg text-mocha font-semibold mb-2">
+                    {item.name}
+                  </h3>
+                  <div className="w-6 h-px bg-parchment mx-auto mb-2" />
+                  <p className="text-brown text-sm leading-relaxed mb-3">
+                    {item.desc}
+                  </p>
+                  <span className="text-rose text-sm font-semibold">
+                    {item.price}
+                  </span>
+                </div>
               </div>
             ))}
           </div>

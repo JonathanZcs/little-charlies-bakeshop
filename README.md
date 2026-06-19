@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Little Charlie's Bake Shop
+
+Website for Little Charlie's Bake Shop — a custom order bakery based in Cortland, Ohio. Built with a rustic farmhouse aesthetic using sage greens, warm creams, and wood-grain textures.
+
+## Tech Stack
+
+- **Next.js** (App Router, Turbopack)
+- **Tailwind CSS v4** — custom theme colors in `globals.css` via `@theme {}`
+- **Fonts** — Playfair Display (headings), Lato (body), Dancing Script (accents) via `next/font/google`
+- **TypeScript**
+
+## Pages
+
+| Route | Description |
+|-------|-------------|
+| `/` | Homepage — hero split layout, featured treats, custom orders CTA, about teaser |
+| `/menu` | Seasonal menu — 6 category cards with photos and item/price listings |
+| `/shop` | Filterable product grid — 12 items with photos and order links |
+| `/about` | Bakery story, Alexis baking photo, stats plaque |
+| `/contact` | Order inquiry form (name, phone, email, inquiry type) |
+| `/follow` | Social media links — Instagram, Facebook, TikTok, Email |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contact Form
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The form posts to `/api/contact`. It currently validates inputs and logs to console. To enable email delivery, wire up [Resend](https://resend.com) or [SendGrid](https://sendgrid.com) in `src/app/api/contact/route.ts`.
 
-## Learn More
+## Images
 
-To learn more about Next.js, take a look at the following resources:
+All product and menu photos live in `public/images/`. The logo uses `mix-blend-multiply` to eliminate the baked-in background on light surfaces.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deploy to [Vercel](https://vercel.com) — zero config required for Next.js App Router projects.
 
-## Deploy on Vercel
+## Pending
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Wire email sending in `/api/contact`
+- [ ] Add pie category photo (`menu-pies.jpg`)
+- [ ] Revisit logo (transparent version via Canva or remove.bg)
+- [ ] Deploy to Vercel
