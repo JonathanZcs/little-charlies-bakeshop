@@ -37,7 +37,7 @@ export default function AboutPage() {
                 alt="Alexis baking in her kitchen"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover object-center"
+                className="object-cover object-[80%_50%]"
               />
             </div>
             {/* Est. plaque */}
