@@ -13,7 +13,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p389/Mommy_%26_me_cinnamon_roll_class.html",
   },
   {
-    name: "Individual Chocolate Chip Brownie",
+    name: "Individual Brownie",
     price: "$5.00",
     category: "Baked Goods",
     image: "/images/brownie.jpg",
@@ -21,7 +21,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p385/individual_chocolate_chip_brownie.html",
   },
   {
-    name: "Jumbo Sourdough Cinnamon Roll w/ Icing",
+    name: "Jumbo Cinnamon Roll",
     price: "$6.00",
     category: "Sourdough",
     image: "/images/cinnamon-roll.jpg",
@@ -29,7 +29,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p388/jumbo_sourdough_cinnamon_roll_w%2F_icing.html",
   },
   {
-    name: "4pk Poptart",
+    name: "4-Pack Poptarts",
     price: "$16.00",
     category: "Baked Goods",
     image: "/images/poptarts.jpg",
@@ -37,7 +37,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p387/4pk_poptart.html",
   },
   {
-    name: "4pk Jumbo Brownies",
+    name: "4-Pack Jumbo Brownies",
     price: "$20.00",
     category: "Baked Goods",
     image: "/images/brownie-4pk.jpg",
@@ -45,7 +45,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p384/4pk_jumbo_brownies.html",
   },
   {
-    name: "Individual Blueberry Cheese Danish",
+    name: "Individual Cheese Danish",
     price: "$4.00",
     category: "Pastries",
     image: "/images/danish.jpg",
@@ -61,7 +61,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p382/sourdough_loaf.html",
   },
   {
-    name: "4pk Jumbo Cookies",
+    name: "4-Pack Jumbo Cookies",
     price: "$20.00",
     category: "Baked Goods",
     image: "/images/cookies-4pk.jpg",
@@ -69,7 +69,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p383/4pk_jumbo_cookies.html",
   },
   {
-    name: "Individual Sourdough Fig Scone",
+    name: "Individual Scone",
     price: "$4.00",
     category: "Sourdough",
     image: "/images/scone.jpg",
@@ -77,7 +77,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p380/individual_sourdough_fig_scone.html",
   },
   {
-    name: "6pk French Macarons",
+    name: "6-Pack French Macarons",
     price: "$18.00",
     category: "Macarons",
     image: "/images/macarons.jpg",
@@ -85,7 +85,7 @@ const products = [
     link: "http://www.littlecharliesbakeshop.com/store/p381/6pk_French_macarons.html",
   },
   {
-    name: "Choc. Chip Banana Bread Loaf w/ Walnuts",
+    name: "Banana Bread Loaf",
     price: "$18.00",
     category: "Baked Goods",
     image: "/images/banana-bread.jpg",
