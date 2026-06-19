@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Follow Us",
+  description:
+    "Follow Little Charlie's Bakeshop on Instagram, Facebook, and TikTok for the latest treats, seasonal specials, and behind-the-scenes baking.",
+};
+
 const socials = [
   {
     name: "Instagram",

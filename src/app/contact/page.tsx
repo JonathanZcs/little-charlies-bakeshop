@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import ContactForm from "./ContactForm";
+
+export const metadata: Metadata = {
+  title: "Contact & Custom Orders",
+  description:
+    "Place a custom order with Little Charlie's Bakeshop. Inquire about custom cakes, decorated cookies, and special occasion treats in Cortland, Ohio.",
+};
 
 export default function ContactPage() {
   return (

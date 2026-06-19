@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Seasonal Menu",
+  description:
+    "Browse Little Charlie's Bakeshop seasonal menu — custom cakes, macarons, sourdough, cookies, cheesecakes, and pies. Made fresh in Cortland, Ohio.",
+};
 
 const menuCategories = [
   {

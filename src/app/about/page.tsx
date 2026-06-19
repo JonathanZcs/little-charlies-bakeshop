@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn the story behind Little Charlie's Bakeshop — started in 2016 out of love for a baptism celebration, now a beloved custom bakery in Cortland, Ohio.",
+};
 
 const stats = [
   { label: "Est.", value: "2016" },

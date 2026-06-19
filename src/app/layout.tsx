@@ -25,9 +25,29 @@ const dancing = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Little Charlie's Bakeshop | Cortland, OH",
+  title: {
+    default: "Little Charlie's Bakeshop | Cortland, OH",
+    template: "%s | Little Charlie's Bakeshop",
+  },
   description:
-    "Handcrafted baked goods made with love in Cortland, Ohio. Custom cakes, cookies, sourdough, macarons, and more.",
+    "Handcrafted baked goods made with love in Cortland, Ohio. Custom cakes, decorated cookies, sourdough bread, macarons, and more. Custom orders welcome.",
+  keywords: [
+    "bakery Cortland Ohio",
+    "custom cakes Ohio",
+    "decorated cookies",
+    "sourdough bread",
+    "macarons",
+    "custom orders bakery",
+    "little charlies bakeshop",
+  ],
+  openGraph: {
+    title: "Little Charlie's Bakeshop",
+    description: "Handcrafted baked goods made with love in Cortland, Ohio.",
+    url: "https://little-charlies-bakeshop-git-main-jz10.vercel.app",
+    siteName: "Little Charlie's Bakeshop",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

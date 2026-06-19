@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import ShopGrid from "./ShopGrid";
+
+export const metadata: Metadata = {
+  title: "Shop",
+  description:
+    "Order online from Little Charlie's Bakeshop — brownies, cinnamon rolls, poptarts, macarons, sourdough loaves, cookies, and more. Pickup in Cortland, Ohio.",
+};
 
 export default function ShopPage() {
   return (

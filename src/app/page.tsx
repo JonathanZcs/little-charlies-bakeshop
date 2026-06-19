@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Divider from "@/components/Divider";
+
+export const metadata: Metadata = {
+  title: "Little Charlie's Bakeshop | Handcrafted Baked Goods in Cortland, OH",
+  description:
+    "Little Charlie's Bakeshop — custom cakes, decorated cookies, sourdough bread, macarons, and seasonal treats handcrafted in Cortland, Ohio. Custom orders welcome.",
+};
 
 const featuredItems = [
   {
@@ -258,6 +265,58 @@ export default function Home() {
           >
             Send an Inquiry
           </Link>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-6 bg-cream">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-rose/70 text-xs tracking-[0.4em] uppercase mb-2">What People Are Saying</p>
+            <p className="font-script text-4xl text-rose mb-1">Customer Love</p>
+            <div className="flex items-center justify-center gap-3 mt-3">
+              <div className="h-px w-10 bg-parchment" />
+              <span className="text-gold text-sm tracking-widest">★★★★★</span>
+              <div className="h-px w-10 bg-parchment" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "The macarons are the best I've had in my life. Best little bakery around — great variety and the butter whip frosting is wonderful.",
+                name: "Kristi R.",
+              },
+              {
+                quote: "I ordered a custom cake and gave them a picture for my daughter's 16th birthday. They were spot on — the picture was identical. We were so pleased when we opened the box.",
+                name: "Vicki S.",
+              },
+              {
+                quote: "Best banana pudding cookie ever and the brown sugar pop tart crust is perfect — the best crust I've ever tasted. A hidden gem!",
+                name: "Angelina R.",
+              },
+              {
+                quote: "We got to the car, opened the sourdough bread and took a bite — I think we took a pound off of it sitting in the car. It was sooooo good. Warm and delicious.",
+                name: "Mara C.",
+              },
+              {
+                quote: "Absolutely phenomenal products and such a cute atmosphere. I've tried the classic sourdough and two specialty flavors — crisp on the outside, moist on the inside. WOW.",
+                name: "Naomi D.",
+              },
+              {
+                quote: "Every time I've visited the staff were so friendly and helpful! The cookies are the best and very flavorful. They also carry my new favorite coffee!",
+                name: "Kenneth H.",
+              },
+            ].map(({ quote, name }) => (
+              <div key={name} className="bg-warm-white border border-parchment p-7 flex flex-col gap-4 relative">
+                <span className="font-script text-5xl text-rose/20 leading-none absolute top-4 left-5 select-none">&ldquo;</span>
+                <p className="text-brown leading-relaxed font-light text-sm pt-4">{quote}</p>
+                <div className="mt-auto pt-4 border-t border-parchment flex items-center justify-between">
+                  <span className="text-mocha text-sm font-semibold">{name}</span>
+                  <span className="text-gold text-xs tracking-widest">★★★★★</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
