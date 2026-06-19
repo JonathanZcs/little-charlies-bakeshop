@@ -4,8 +4,8 @@ import Image from "next/image";
 const menuCategories = [
   {
     name: "Pies",
-    icon: "🥧",
-    image: null,
+    icon: "",
+    image: "/images/menu-pies-v2.jpg",
     items: [
       { name: "Seasonal Fruit Pie", price: "Starting at $28" },
       { name: "Cream Pie", price: "Starting at $28" },
@@ -118,14 +118,12 @@ export default function MenuPage() {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-mocha/30" />
-                <div className="absolute bottom-3 left-5 flex items-center gap-2">
-                  <span className="text-xl">{cat.icon}</span>
+                <div className="absolute bottom-3 left-5">
                   <h2 className="font-script text-2xl text-cream drop-shadow">{cat.name}</h2>
                 </div>
               </div>
             ) : (
-              <div className="h-20 bg-blush flex items-center gap-3 px-6">
-                <span className="text-2xl">{cat.icon}</span>
+              <div className="h-20 bg-blush flex items-center px-6">
                 <h2 className="font-script text-2xl text-rose">{cat.name}</h2>
               </div>
             )}

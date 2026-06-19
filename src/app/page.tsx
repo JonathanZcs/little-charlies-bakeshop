@@ -86,7 +86,7 @@ export default function Home() {
               alt="The heart behind Little Charlie's"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-top"
+              className="object-cover object-center"
               priority
             />
             {/* Overlay caption */}
@@ -178,8 +178,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Custom Orders Photo Scroll */}
+      <section className="bg-blush pt-16 overflow-hidden">
+        <p className="text-center text-rose/70 text-xs tracking-[0.4em] uppercase mb-6">Custom Creations</p>
+        <div className="relative">
+          <div className="flex gap-4 animate-marquee w-max">
+            {[
+              "/images/custom-cake1.jpg",
+              "/images/custom-cookies4.jpg",
+              "/images/custom-cake5.jpg",
+              "/images/decorated-cookies2.jpg",
+              "/images/custom-cake7.jpg",
+              "/images/custom-cookies5.jpg",
+              "/images/decorated-cake.jpg",
+              "/images/custom-cookies6.jpg",
+              "/images/custom-cake2.jpg",
+              "/images/custom-cupcake.jpg",
+              "/images/custom-cookies7.jpg",
+              "/images/custom-cake3.jpg",
+              "/images/decorated-sugar-cookies-1.jpg",
+              "/images/custom-cake6.jpg",
+              "/images/custom-cookies8.jpg",
+              "/images/decorated-cookies3.jpg",
+              // duplicated for seamless loop
+              "/images/custom-cake1.jpg",
+              "/images/custom-cookies4.jpg",
+              "/images/custom-cake5.jpg",
+              "/images/decorated-cookies2.jpg",
+              "/images/custom-cake7.jpg",
+              "/images/custom-cookies5.jpg",
+              "/images/decorated-cake.jpg",
+              "/images/custom-cookies6.jpg",
+              "/images/custom-cake2.jpg",
+              "/images/custom-cupcake.jpg",
+              "/images/custom-cookies7.jpg",
+              "/images/custom-cake3.jpg",
+              "/images/decorated-sugar-cookies-1.jpg",
+              "/images/custom-cake6.jpg",
+              "/images/custom-cookies8.jpg",
+              "/images/decorated-cookies3.jpg",
+            ].map((src, i) => (
+              <div key={i} className="relative h-64 w-56 shrink-0 overflow-hidden">
+                <Image
+                  src={src}
+                  alt="Custom creation"
+                  fill
+                  sizes="224px"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Custom Orders CTA */}
-      <section className="py-20 px-8 bg-blush">
+      <section className="py-16 px-8 bg-blush">
         <div className="max-w-2xl mx-auto text-center border border-parchment p-10 md:p-14 relative">
           {/* Corner accents */}
           <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-parchment" />
