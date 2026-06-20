@@ -81,7 +81,7 @@ function buildOrderEmail(opts: {
   orderId?: string;
 }) {
   const { name, phone, email, orderType, eventDateStr, inquiry, orderId } = opts;
-  const adminUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://little-charlies-bakeshop-git-main-jz10.vercel.app"}/admin`;
+  const adminUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://littlecharliesbakeshop.com"}/admin`;
 
   return `
 <!DOCTYPE html>
