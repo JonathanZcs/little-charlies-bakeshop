@@ -15,11 +15,13 @@ type MenuCard = {
   images: string[];
   items: MenuItem[];
   note?: string;
+  imgClass?: string;
 };
 
 const drinksCards: MenuCard[] = [
   {
     name: "Lattes",
+    imgClass: "object-top",
     images: [
       "/images/latte.jpg",
       "/images/coffee-1.jpg",
@@ -38,6 +40,7 @@ const drinksCards: MenuCard[] = [
   },
   {
     name: "Specialty Drinks",
+    imgClass: "object-top",
     images: ["/images/matcha.jpg", "/images/coffee-6.jpg"],
     items: [
       {
@@ -92,16 +95,6 @@ const breakfastCards: MenuCard[] = [
 
 const bakeryCards: MenuCard[] = [
   {
-    name: "Pies",
-    images: ["/images/menu-pies-v2.jpg"],
-    items: [
-      { name: "Seasonal Fruit Pie", price: "From $28" },
-      { name: "Cream Pie", price: "From $28" },
-      { name: "Nut Pie", price: "From $30" },
-    ],
-    note: "Whole pies only. Pre-order required.",
-  },
-  {
     name: "Decorated Cookies",
     images: ["/images/menu-cookies.jpg"],
     items: [
@@ -110,17 +103,6 @@ const bakeryCards: MenuCard[] = [
       { name: "Gift Set", price: "From $30" },
     ],
     note: "Custom designs welcome. Lead time required.",
-  },
-  {
-    name: "Cheesecake",
-    images: ["/images/cheesecake-whole.jpg", "/images/cheesecake-slice.jpg"],
-    items: [
-      { name: "Classic New York", price: "$40" },
-      { name: "Seasonal Flavor", price: "$42" },
-      { name: "Shooters (6pk)", price: "$22.50" },
-      { name: "Whole 9in", price: "$55" },
-    ],
-    note: "Pre-order recommended.",
   },
   {
     name: "Cakes & Cupcakes",
@@ -147,6 +129,27 @@ const bakeryCards: MenuCard[] = [
       { name: "Scone", price: "$4" },
       { name: "Sourdough Starter", price: "$5" },
     ],
+  },
+  {
+    name: "Pies",
+    images: ["/images/menu-pies-v2.jpg"],
+    items: [
+      { name: "Seasonal Fruit Pie", price: "From $28" },
+      { name: "Cream Pie", price: "From $28" },
+      { name: "Nut Pie", price: "From $30" },
+    ],
+    note: "Whole pies only. Pre-order required.",
+  },
+  {
+    name: "Cheesecake",
+    images: ["/images/cheesecake-whole.jpg", "/images/cheesecake-slice.jpg"],
+    items: [
+      { name: "Classic New York", price: "$40" },
+      { name: "Seasonal Flavor", price: "$42" },
+      { name: "Shooters (6pk)", price: "$22.50" },
+      { name: "Whole 9in", price: "$55" },
+    ],
+    note: "Pre-order recommended.",
   },
   {
     name: "French Macarons",
@@ -196,7 +199,7 @@ function MenuCardGrid({ cards }: { cards: MenuCard[] }) {
               alt={card.name}
               fill
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              className={`object-cover group-hover:scale-105 transition-transform duration-500 ${card.imgClass ?? "object-center"}`}
             />
             <div className="absolute inset-0 bg-linear-to-t from-mocha/75 via-mocha/15 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-5 text-center">

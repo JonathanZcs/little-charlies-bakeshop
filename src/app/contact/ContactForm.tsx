@@ -123,11 +123,12 @@ export default function ContactForm() {
           <label htmlFor="eventDate" className={labelClass}>
             Event Date <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(optional)</span>
           </label>
+          <p className="text-xs text-brown/40 italic mb-1.5">Minimum 3 days lead time required.</p>
           <input
             id="eventDate"
             name="eventDate"
             type="date"
-            min={new Date().toISOString().split("T")[0]}
+            min={(() => { const d = new Date(); d.setDate(d.getDate() + 3); return d.toISOString().split("T")[0]; })()}
             className={inputClass + " cursor-pointer py-3.5"}
             onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
           />

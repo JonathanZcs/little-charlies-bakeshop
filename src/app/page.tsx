@@ -50,11 +50,11 @@ export default function Home() {
             <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-parchment hidden md:block" />
 
             <Image
-              src="/images/logo.png"
+              src="/images/logo-stamp.png"
               alt="Little Charlie's Bake Shop"
               width={380}
               height={380}
-              className="w-64 h-64 md:w-80 md:h-80 object-contain mb-2 mix-blend-multiply"
+              className="w-64 h-64 md:w-80 md:h-80 object-contain mb-2"
               priority
             />
 
