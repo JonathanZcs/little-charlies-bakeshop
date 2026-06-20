@@ -22,7 +22,7 @@ type MenuCard = {
 const drinksCards: MenuCard[] = [
   {
     name: "Lattes",
-    imgClass: "object-center",
+    imgClass: "[object-position:center_25%]",
     images: ["/images/coffee-1.jpg"],
     items: [
       { name: "White Chocolate Caramel" },
@@ -35,7 +35,7 @@ const drinksCards: MenuCard[] = [
   },
   {
     name: "Specialty Drinks",
-    imgClass: "object-center",
+    imgClass: "[object-position:center_15%]",
     images: ["/images/matcha.jpg"],
     items: [
       {
@@ -52,6 +52,7 @@ const drinksCards: MenuCard[] = [
 const breakfastCards: MenuCard[] = [
   {
     name: "Warm Breakfast",
+    imgClass: "[object-position:center_75%]",
     images: [
       "/images/avocado-toast.jpg",
       "/images/breakfast-focaccia.jpg",
@@ -73,6 +74,7 @@ const breakfastCards: MenuCard[] = [
   },
   {
     name: "Sourdough Bagels",
+    imgClass: "[object-position:center_75%]",
     images: [
       "/images/bagels-1.jpg",
       "/images/bagels-2.jpg",
