@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import { getOrders, updateOrderStatus } from "@/lib/db";
-import { sendDepositPaidSMS } from "@/lib/sms";
 
 // Square sends a HMAC-SHA256 signature in x-square-hmacsha256-signature
 function verifySignature(body: string, signature: string, notificationUrl: string): boolean {
@@ -47,9 +46,6 @@ export async function POST(request: NextRequest) {
       const matched = orders.find((o) => o.square_invoice_id && invoice?.id === o.square_invoice_id);
       if (matched) {
         const updated = await updateOrderStatus(matched.id, "deposit_paid");
-        if (updated) {
-          await sendDepositPaidSMS(updated).catch(console.error);
-        }
       }
     }
   }

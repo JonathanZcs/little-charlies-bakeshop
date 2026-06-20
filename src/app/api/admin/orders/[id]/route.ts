@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getOrder, updateOrderStatus } from "@/lib/db";
-import { sendAcceptedSMS, sendDeclinedSMS } from "@/lib/sms";
 import { createDepositInvoice } from "@/lib/square";
 import { Resend } from "resend";
 
@@ -33,7 +32,6 @@ export async function PATCH(
   switch (action) {
     case "accept": {
       const updated = await updateOrderStatus(id, "accepted", { admin_note: note });
-      if (updated) await sendAcceptedSMS(updated).catch(console.error);
       // Send acceptance email to customer
       await getResend().emails.send({
         from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
@@ -46,7 +44,6 @@ export async function PATCH(
 
     case "decline": {
       const updated = await updateOrderStatus(id, "declined", { admin_note: note });
-      if (updated) await sendDeclinedSMS(updated).catch(console.error);
       await getResend().emails.send({
         from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
         to: process.env.VERCEL_ENV === "production" ? order.customer_email : "jonz0917@yahoo.com",
