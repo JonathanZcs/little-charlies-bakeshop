@@ -4,7 +4,7 @@ import { sendAcceptedSMS, sendDeclinedSMS } from "@/lib/sms";
 import { createDepositInvoice } from "@/lib/square";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const getResend = () => new Resend(process.env.RESEND_API_KEY);
 
 function isAuthorized(req: NextRequest) {
   const key = req.headers.get("x-admin-key");
@@ -35,7 +35,7 @@ export async function PATCH(
       const updated = await updateOrderStatus(id, "accepted", { admin_note: note });
       if (updated) await sendAcceptedSMS(updated).catch(console.error);
       // Send acceptance email to customer
-      await resend.emails.send({
+      await getResend().emails.send({
         from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
         to: process.env.NODE_ENV === "development" ? "jonz0917@yahoo.com" : order.customer_email,
         subject: "Your Order Inquiry — We'd Love to Help! 🎂",
@@ -47,7 +47,7 @@ export async function PATCH(
     case "decline": {
       const updated = await updateOrderStatus(id, "declined", { admin_note: note });
       if (updated) await sendDeclinedSMS(updated).catch(console.error);
-      await resend.emails.send({
+      await getResend().emails.send({
         from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
         to: process.env.NODE_ENV === "development" ? "jonz0917@yahoo.com" : order.customer_email,
         subject: "Your Order Inquiry — Little Charlie's Bakeshop",

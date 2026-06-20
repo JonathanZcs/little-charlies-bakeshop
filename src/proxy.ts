@@ -11,7 +11,7 @@ function isValidSession(cookieValue: string | undefined, password: string): bool
   return timingSafeEqual(Buffer.from(expected), Buffer.from(cookieValue));
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (!pathname.startsWith("/admin") || pathname.startsWith("/admin/login")) {

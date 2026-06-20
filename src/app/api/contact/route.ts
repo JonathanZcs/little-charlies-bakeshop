@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { createOrder } from "@/lib/db";
 import { sendOrderAlertSMS } from "@/lib/sms";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const getResend = () => new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     });
 
     // 2. Send notification email to Alexis
-    await resend.emails.send({
+    await getResend().emails.send({
       from: "Order Inquiry - Little Charlie's <onboarding@resend.dev>",
       to: process.env.NODE_ENV === "development" ? "jonz0917@yahoo.com" : "littlecharliesbakeshop@hotmail.com",
       replyTo: email as string,
