@@ -66,12 +66,27 @@ export default async function AdminPage() {
   );
 }
 
+function getPickupUrgency(eventDate: string | null): { label: string; classes: string } | null {
+  if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) return null;
+  const pickup = new Date(eventDate + "T12:00:00Z");
+  const now = new Date();
+  const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
+  const diffDays = Math.round((pickup.getTime() - todayUTC.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0)  return { label: "PAST DUE",    classes: "bg-red-100 text-red-700 border border-red-200" };
+  if (diffDays === 0) return { label: "TODAY",       classes: "bg-red-100 text-red-700 border border-red-200" };
+  if (diffDays === 1) return { label: "TOMORROW",    classes: "bg-amber-100 text-amber-700 border border-amber-200" };
+  if (diffDays <= 3)  return { label: `IN ${diffDays} DAYS`, classes: "bg-amber-50 text-amber-600 border border-amber-200" };
+  return { label: `IN ${diffDays} DAYS`, classes: "bg-parchment text-brown/60 border border-parchment" };
+}
+
 function OrderCard({ order }: { order: Order }) {
   const tz = "America/New_York";
 
   const pickupStr = order.event_date && /^\d{4}-\d{2}-\d{2}$/.test(order.event_date)
-    ? new Date(order.event_date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: tz })
+    ? new Date(order.event_date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: tz })
     : null;
+
+  const urgency = getPickupUrgency(order.event_date);
 
   const createdStr = new Date(order.created_at).toLocaleString("en-US", {
     month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz,
@@ -86,7 +101,16 @@ function OrderCard({ order }: { order: Order }) {
             <span className="font-serif text-lg text-mocha">{order.customer_name}</span>
           </div>
           <p className="text-sm text-brown/70 font-medium">{order.order_type}</p>
-          {pickupStr && <p className="text-xs text-rose mt-0.5">📅 Pickup: {pickupStr}</p>}
+          {pickupStr && (
+            <div className="flex items-center gap-2 mt-1.5">
+              <span className="text-xs text-brown/60">📅 Pickup: <span className="font-medium text-brown/80">{pickupStr}</span></span>
+              {urgency && (
+                <span className={`text-[10px] font-bold tracking-widest px-2 py-0.5 ${urgency.classes}`}>
+                  {urgency.label}
+                </span>
+              )}
+            </div>
+          )}
           <p className="text-xs text-brown/40 mt-1">Received {createdStr}</p>
         </div>
         <div className="sm:text-right text-sm space-y-0.5 shrink-0">
