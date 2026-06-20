@@ -28,7 +28,7 @@ export default function Footer() {
             </div>
             <div className="flex justify-between gap-4">
               <dt>Saturday</dt>
-              <dd>9AM &ndash; 3PM</dd>
+              <dd>9AM &ndash; 2PM</dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt>Sunday &ndash; Monday</dt>

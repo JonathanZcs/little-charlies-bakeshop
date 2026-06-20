@@ -69,7 +69,7 @@ export default function ContactPage() {
               <p className="text-brown text-sm leading-7">
                 Tue &ndash; Fri: 7:30AM &ndash; 4PM
                 <br />
-                Sat: 9AM &ndash; 3PM
+                Sat: 9AM &ndash; 2PM
                 <br />
                 Sun &ndash; Mon: Closed
               </p>
