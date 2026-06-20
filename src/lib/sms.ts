@@ -19,8 +19,8 @@ export async function sendOrderAlertSMS(order: Order) {
   }
 
   const dateStr = order.event_date
-    ? new Date(order.event_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
-    : "no date specified";
+    ? new Date(order.event_date + "T12:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    : "no date set";
 
   await c.messages.create({
     from: fromNumber,
@@ -28,41 +28,8 @@ export async function sendOrderAlertSMS(order: Order) {
     body:
       `🎂 New Order Inquiry!\n` +
       `${order.order_type} — ${order.customer_name}\n` +
-      `Event: ${dateStr}\n` +
+      `Pickup: ${dateStr}\n` +
       `Phone: ${order.customer_phone}\n` +
-      `Review at: littlecharliesbakeshop.vercel.app/admin`,
-  });
-}
-
-export async function sendAcceptedSMS(order: Order) {
-  const c = client();
-  if (!c || !fromNumber || !toNumber) return;
-  await c.messages.create({
-    from: fromNumber,
-    to: toNumber,
-    body: `✅ Order accepted — ${order.customer_name} (${order.order_type}). Invoice sent to ${order.customer_email}.`,
-  });
-}
-
-export async function sendDeclinedSMS(order: Order) {
-  const c = client();
-  if (!c || !fromNumber || !toNumber) return;
-  await c.messages.create({
-    from: fromNumber,
-    to: toNumber,
-    body: `❌ Order declined — ${order.customer_name} (${order.order_type}). Decline email sent.`,
-  });
-}
-
-export async function sendDepositPaidSMS(order: Order) {
-  const c = client();
-  if (!c || !fromNumber || !toNumber) return;
-  const amount = order.deposit_amount_cents
-    ? `$${(order.deposit_amount_cents / 100).toFixed(2)}`
-    : "deposit";
-  await c.messages.create({
-    from: fromNumber,
-    to: toNumber,
-    body: `💰 ${amount} deposit received! ${order.customer_name} — ${order.order_type} is confirmed. Check admin for details.`,
+      `Review at: littlecharliesbakeshop.com/admin`,
   });
 }

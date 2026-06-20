@@ -115,7 +115,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="eventDate" className={labelClass}>
-            Event Date <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(optional · 3 day min.)</span>
+            Pickup Date <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(optional · 3 day min.)</span>
           </label>
           <input
             id="eventDate"

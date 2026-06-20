@@ -152,7 +152,7 @@ function buildOrderEmail(opts: {
               </tr>
               ${eventDateStr ? `
               <tr style="background:#ffffff;">
-                <td style="padding:11px 12px;font-size:10px;color:#999;text-transform:uppercase;letter-spacing:1px;vertical-align:top;">Event Date</td>
+                <td style="padding:11px 12px;font-size:10px;color:#999;text-transform:uppercase;letter-spacing:1px;vertical-align:top;">Pickup Date</td>
                 <td style="padding:11px 12px;font-size:15px;color:#2d2017;font-weight:bold;">${eventDateStr}</td>
               </tr>` : ""}
             </table>
