@@ -137,7 +137,7 @@ function OrderCard({ order }: { order: Order }) {
   const tz = "America/New_York";
 
   // Use noon UTC for event_date (YYYY-MM-DD) to prevent UTC midnight rolling back a day in ET
-  const dateStr = order.event_date
+  const dateStr = order.event_date && /^\d{4}-\d{2}-\d{2}$/.test(order.event_date)
     ? new Date(order.event_date + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: tz })
     : null;
 
