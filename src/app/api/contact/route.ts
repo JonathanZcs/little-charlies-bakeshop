@@ -20,12 +20,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Required fields are missing" }, { status: 400 });
     }
 
-    // Enforce 3-day lead time server-side
+    // Enforce 3-day lead time server-side.
+    // Compare YYYY-MM-DD strings directly to avoid timezone issues (both sides are UTC date strings).
     if (typeof eventDate === "string" && eventDate.trim()) {
       const minDate = new Date();
-      minDate.setDate(minDate.getDate() + 3);
-      minDate.setHours(0, 0, 0, 0);
-      if (new Date(eventDate) < minDate) {
+      minDate.setUTCDate(minDate.getUTCDate() + 3);
+      const minDateStr = minDate.toISOString().split("T")[0];
+      if (eventDate.trim() < minDateStr) {
         return NextResponse.json({ error: "Event date must be at least 3 days from today." }, { status: 400 });
       }
     }
