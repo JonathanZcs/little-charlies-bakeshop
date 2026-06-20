@@ -240,6 +240,8 @@ function OrderCard({ order }: { order: Order }) {
         })
       : null;
 
+  const urgency = getPickupUrgency(order.event_date);
+
   const createdStr = new Date(order.created_at).toLocaleString("en-US", {
     month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz,
   });
@@ -251,15 +253,22 @@ function OrderCard({ order }: { order: Order }) {
         <div>
           <span className="font-serif text-lg text-mocha">{order.customer_name}</span>
           <p className="text-sm text-brown/70 font-medium mt-0.5">{order.order_type}</p>
-          <p className="text-xs text-brown/40 mt-1 flex items-center gap-1.5">
-            <span>📅</span>
-            <span>
-              Pickup:{" "}
-              <span className={pickupStr ? "text-brown/60" : "italic text-brown/30"}>
-                {pickupStr ?? "not specified"}
+          <div className="flex items-center gap-2 mt-1">
+            <p className="text-xs text-brown/40 flex items-center gap-1.5">
+              <span>📅</span>
+              <span>
+                Pickup:{" "}
+                <span className={pickupStr ? "text-brown/60" : "italic text-brown/30"}>
+                  {pickupStr ?? "not specified"}
+                </span>
               </span>
-            </span>
-          </p>
+            </p>
+            {urgency && (
+              <span className={`text-[10px] font-bold tracking-widest px-2 py-0.5 ${urgency.classes}`}>
+                {urgency.label}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-brown/30 mt-0.5">Received {createdStr}</p>
         </div>
         <div className="sm:text-right text-sm space-y-0.5 shrink-0">
