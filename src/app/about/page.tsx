@@ -93,7 +93,7 @@ export default function AboutPage() {
                   <p className="text-rose/70 text-xs tracking-[0.3em] uppercase mb-1">
                     {label}
                   </p>
-                  <p className="font-serif text-2xl text-mocha font-semibold">{value}</p>
+                  <p className="font-serif text-lg sm:text-2xl text-mocha font-semibold leading-tight">{value}</p>
                 </div>
               ))}
             </div>
