@@ -1,4 +1,4 @@
-import { getOrders } from "@/lib/db";
+import { getOrders, deleteOrder } from "@/lib/db";
 import type { Order, OrderStatus } from "@/lib/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -209,6 +209,12 @@ function OrderCard({ order }: { order: Order }) {
         </div>
       )}
 
+      {(order.status === "declined" || order.status === "completed") && (
+        <div className="flex justify-end pt-3 border-t border-parchment">
+          <DeleteForm orderId={order.id} />
+        </div>
+      )}
+
       {order.admin_note && (
         <p className="mt-3 text-xs text-brown/50 italic">Note: {order.admin_note}</p>
       )}
@@ -328,6 +334,25 @@ function MarkCompletedForm({ orderId }: { orderId: string }) {
         className="bg-mocha text-cream px-5 py-2 text-xs tracking-widest uppercase hover:bg-brown transition-colors cursor-pointer"
       >
         ✓ Mark Completed
+      </button>
+    </form>
+  );
+}
+
+function DeleteForm({ orderId }: { orderId: string }) {
+  async function remove() {
+    "use server";
+    await deleteOrder(orderId);
+    redirect("/admin");
+  }
+
+  return (
+    <form action={remove}>
+      <button
+        type="submit"
+        className="text-xs text-brown/30 hover:text-red-400 transition-colors cursor-pointer tracking-widest uppercase"
+      >
+        Delete
       </button>
     </form>
   );

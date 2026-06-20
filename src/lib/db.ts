@@ -66,6 +66,12 @@ export async function getOrder(id: string): Promise<Order | null> {
   return (rows[0] as Order) ?? null;
 }
 
+export async function deleteOrder(id: string): Promise<boolean> {
+  if (!sql) return false;
+  await sql`DELETE FROM orders WHERE id = ${id}`;
+  return true;
+}
+
 export async function updateOrderStatus(
   id: string,
   status: OrderStatus,
