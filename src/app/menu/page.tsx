@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import RotatingPhoto from "./RotatingPhoto";
 
 export const metadata: Metadata = {
   title: "Menu",
@@ -194,13 +195,21 @@ function MenuCardGrid({ cards }: { cards: MenuCard[] }) {
         >
           {/* Photo */}
           <div className="relative h-56 overflow-hidden">
-            <Image
-              src={card.images[0]}
-              alt={card.name}
-              fill
-              sizes="(max-width: 640px) 100vw, 50vw"
-              className={`object-cover group-hover:scale-105 transition-transform duration-500 ${card.imgClass ?? "object-center"}`}
-            />
+            {card.images.length > 1 ? (
+              <RotatingPhoto
+                images={card.images}
+                alt={card.name}
+                sizes="(max-width: 640px) 100vw, 50vw"
+              />
+            ) : (
+              <Image
+                src={card.images[0]}
+                alt={card.name}
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className={`object-cover group-hover:scale-105 transition-transform duration-500 ${card.imgClass ?? "object-center"}`}
+              />
+            )}
             <div className="absolute inset-0 bg-linear-to-t from-mocha/75 via-mocha/15 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
               <p className="font-script text-2xl text-cream drop-shadow">
