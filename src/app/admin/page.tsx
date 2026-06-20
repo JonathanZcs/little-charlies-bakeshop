@@ -230,6 +230,18 @@ export default async function AdminPage({
   );
 }
 
+function getPickupUrgency(eventDate: string | null): { label: string; classes: string } | null {
+  if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) return null;
+  const pickup = new Date(eventDate + "T12:00:00Z");
+  const today  = new Date(todayET() + "T12:00:00Z");
+  const diffDays = Math.round((pickup.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0)  return null;
+  if (diffDays === 0) return { label: "TODAY",              classes: "bg-red-100 text-red-700 border border-red-200" };
+  if (diffDays === 1) return { label: "TOMORROW",           classes: "bg-amber-100 text-amber-700 border border-amber-200" };
+  if (diffDays <= 3)  return { label: `IN ${diffDays} DAYS`, classes: "bg-amber-50 text-amber-600 border border-amber-200" };
+  return { label: `IN ${diffDays} DAYS`, classes: "bg-parchment text-brown/60 border border-parchment" };
+}
+
 function OrderCard({ order }: { order: Order }) {
   const tz = "America/New_York";
 
