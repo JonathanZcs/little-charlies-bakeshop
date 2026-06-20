@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     // 2. Send notification email to Alexis
     await getResend().emails.send({
       from: "Order Inquiry - Little Charlie's <onboarding@resend.dev>",
-      to: process.env.NODE_ENV === "development" ? "jonz0917@yahoo.com" : "littlecharliesbakeshop@hotmail.com",
+      to: process.env.VERCEL_ENV === "production" ? "littlecharliesbakeshop@hotmail.com" : "jonz0917@yahoo.com",
       replyTo: email as string,
       subject: `Order Inquiry — ${name} (${orderType})`,
       html: buildOrderEmail({ name: name as string, phone: phone as string, email: email as string, orderType: orderType as string, eventDateStr, inquiry: inquiry as string, orderId: order?.id }),
@@ -66,7 +66,8 @@ export async function POST(request: NextRequest) {
     // TODO: Send customer confirmation email once verified domain is set up in Resend.
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error("[contact] POST failed:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

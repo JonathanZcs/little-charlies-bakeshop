@@ -37,7 +37,7 @@ export async function PATCH(
       // Send acceptance email to customer
       await getResend().emails.send({
         from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
-        to: process.env.NODE_ENV === "development" ? "jonz0917@yahoo.com" : order.customer_email,
+        to: process.env.VERCEL_ENV === "production" ? order.customer_email : "jonz0917@yahoo.com",
         subject: "Your Order Inquiry — We'd Love to Help! 🎂",
         html: buildAcceptanceEmail(order.customer_name, order.order_type, note),
       }).catch(console.error);
@@ -49,7 +49,7 @@ export async function PATCH(
       if (updated) await sendDeclinedSMS(updated).catch(console.error);
       await getResend().emails.send({
         from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
-        to: process.env.NODE_ENV === "development" ? "jonz0917@yahoo.com" : order.customer_email,
+        to: process.env.VERCEL_ENV === "production" ? order.customer_email : "jonz0917@yahoo.com",
         subject: "Your Order Inquiry — Little Charlie's Bakeshop",
         html: buildDeclineEmail(order.customer_name, order.order_type, note),
       }).catch(console.error);
