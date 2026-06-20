@@ -15,12 +15,13 @@ async function logout() {
   redirect("/admin/login");
 }
 
+function todayET(): string {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // YYYY-MM-DD in ET
+}
+
 function isPast(eventDate: string | null): boolean {
   if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) return false;
-  const pickup = new Date(eventDate + "T12:00:00Z");
-  const now = new Date();
-  const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
-  return pickup < todayUTC;
+  return eventDate < todayET();
 }
 
 export default async function AdminPage({
@@ -83,7 +84,7 @@ export default async function AdminPage({
               activeTab === "past" ? "bg-rose text-cream" : "border border-parchment text-brown hover:border-rose hover:text-rose"
             }`}
           >
-            Past
+            Past Orders
             {past.length > 0 && (
               <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${activeTab === "past" ? "bg-white/20 text-cream" : "bg-parchment text-brown/60"}`}>
                 {past.length}
@@ -94,7 +95,7 @@ export default async function AdminPage({
 
         {orders.length === 0 ? (
           <div className="text-center py-20 text-brown/40">
-            <p className="text-lg font-light">No {activeTab === "past" ? "past" : "upcoming"} inquiries.</p>
+            <p className="text-lg font-light">No {activeTab === "past" ? "past orders" : "upcoming inquiries"}.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -111,9 +112,8 @@ export default async function AdminPage({
 function getPickupUrgency(eventDate: string | null): { label: string; classes: string } | null {
   if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) return null;
   const pickup = new Date(eventDate + "T12:00:00Z");
-  const now = new Date();
-  const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
-  const diffDays = Math.round((pickup.getTime() - todayUTC.getTime()) / (1000 * 60 * 60 * 24));
+  const today  = new Date(todayET()  + "T12:00:00Z");
+  const diffDays = Math.round((pickup.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   if (diffDays < 0)  return null;
   if (diffDays === 0) return { label: "TODAY",       classes: "bg-red-100 text-red-700 border border-red-200" };
   if (diffDays === 1) return { label: "TOMORROW",    classes: "bg-amber-100 text-amber-700 border border-amber-200" };
