@@ -200,6 +200,7 @@ function MenuCardGrid({ cards }: { cards: MenuCard[] }) {
                 images={card.images}
                 alt={card.name}
                 sizes="(max-width: 640px) 100vw, 50vw"
+                imgClass={card.imgClass}
               />
             ) : (
               <Image

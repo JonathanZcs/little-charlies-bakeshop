@@ -8,11 +8,13 @@ export default function RotatingPhoto({
   alt,
   sizes = "42vw",
   interval = 3500,
+  imgClass = "object-center",
 }: {
   images: string[];
   alt: string;
   sizes?: string;
   interval?: number;
+  imgClass?: string;
 }) {
   const [current, setCurrent] = useState(0);
 
@@ -38,7 +40,7 @@ export default function RotatingPhoto({
             alt={alt}
             fill
             sizes={sizes}
-            className="object-cover"
+            className={`object-cover ${imgClass}`}
             priority={i === 0}
           />
         </div>
