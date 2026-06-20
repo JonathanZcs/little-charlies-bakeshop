@@ -59,6 +59,14 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
 
+      {/* Inquiry notice */}
+      <div className="bg-blush border border-rose/20 px-4 py-3 flex gap-3 items-start">
+        <span className="text-rose mt-0.5 shrink-0">ℹ</span>
+        <p className="text-sm text-mocha leading-relaxed">
+          <strong>This is an inquiry, not a confirmed order.</strong> Submitting this form simply sends your request to Alexis — your order is not confirmed until she reaches out to discuss details and collect a deposit.
+        </p>
+      </div>
+
       {/* Name + Phone */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
@@ -115,12 +123,14 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="eventDate" className={labelClass}>
-            Pickup Date <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(optional · 3 day min.)</span>
+            Pickup Date <span className="text-rose">*</span>{" "}
+            <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(3 day min.)</span>
           </label>
           <input
             id="eventDate"
             name="eventDate"
             type="date"
+            required
             min={(() => { const todayET = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); const [y, m, d] = todayET.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d + 3)).toISOString().split("T")[0]; })()}
             className={inputClass + " cursor-pointer py-3.5"}
             onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
@@ -183,10 +193,6 @@ export default function ContactForm() {
           )}
         </div>
       </div>
-
-      <p className="text-xs text-brown/50 italic">
-        Orders are inquiry only and are not confirmed until a deposit is received.
-      </p>
 
       <button
         type="submit"

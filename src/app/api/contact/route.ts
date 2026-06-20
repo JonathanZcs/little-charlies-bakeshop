@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const inquiry   = formData.get("inquiry") as string | null;
     const photos    = formData.getAll("photos") as File[];
 
-    if (!name?.trim() || !phone?.trim() || !email?.trim() || !orderType?.trim() || !inquiry?.trim()) {
+    if (!name?.trim() || !phone?.trim() || !email?.trim() || !orderType?.trim() || !inquiry?.trim() || !eventDate?.trim()) {
       return NextResponse.json({ error: "Required fields are missing" }, { status: 400 });
     }
 
