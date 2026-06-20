@@ -43,10 +43,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Little Charlie's Bakeshop",
     description: "Handcrafted baked goods made with love in Cortland, Ohio.",
-    url: "https://little-charlies-bakeshop-git-main-jz10.vercel.app",
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://littlecharliesbakeshop.com",
     siteName: "Little Charlie's Bakeshop",
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Little Charlie's Bakeshop",
+    description: "Handcrafted baked goods made with love in Cortland, Ohio.",
   },
 };
 
