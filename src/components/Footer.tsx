@@ -24,7 +24,10 @@ export default function Footer() {
           <dl className="text-sm text-parchment/80 space-y-2">
             <div className="flex justify-between gap-4">
               <dt>Tuesday &ndash; Friday</dt>
-              <dd>7:30AM &ndash; 4PM</dd>
+              <dd className="text-right">
+                <span className="block">7:30AM &ndash; 9AM <span className="text-parchment/50 text-xs">drive-thru</span></span>
+                <span className="block">9AM &ndash; 4PM <span className="text-parchment/50 text-xs">storefront</span></span>
+              </dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt>Saturday</dt>
