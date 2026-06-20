@@ -121,7 +121,7 @@ export default function ContactForm() {
             id="eventDate"
             name="eventDate"
             type="date"
-            min={(() => { const d = new Date(); d.setUTCDate(d.getUTCDate() + 3); return d.toISOString().split("T")[0]; })()}
+            min={(() => { const todayET = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); const [y, m, d] = todayET.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d + 3)).toISOString().split("T")[0]; })()}
             className={inputClass + " cursor-pointer py-3.5"}
             onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
           />

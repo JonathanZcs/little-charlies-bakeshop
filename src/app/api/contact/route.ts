@@ -21,13 +21,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Required fields are missing" }, { status: 400 });
     }
 
-    // Enforce 3-day lead time server-side.
+    // Enforce 3-day lead time server-side using ET (not UTC — avoids off-by-one after 8 PM ET).
     if (eventDate?.trim()) {
-      const minDate = new Date();
-      minDate.setUTCDate(minDate.getUTCDate() + 3);
-      const minDateStr = minDate.toISOString().split("T")[0];
+      const todayET = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+      const [y, m, d] = todayET.split("-").map(Number);
+      const minDateStr = new Date(Date.UTC(y, m - 1, d + 3)).toISOString().split("T")[0];
       if (eventDate.trim() < minDateStr) {
-        return NextResponse.json({ error: "Event date must be at least 3 days from today." }, { status: 400 });
+        return NextResponse.json({ error: "Pickup date must be at least 3 days from today." }, { status: 400 });
       }
     }
 
