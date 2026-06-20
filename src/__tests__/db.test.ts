@@ -115,9 +115,10 @@ describe("updateOrderStatus", () => {
 
 describe("graceful no-op when DATABASE_URL is not set", () => {
   it("createOrder returns null", async () => {
-    // Re-import with no DATABASE_URL
-    vi.unstubAllEnvs();
+    // Re-import with DATABASE_URL explicitly cleared (vi.unstubAllEnvs doesn't remove
+    // real env vars — on Vercel the var is set in the build environment itself)
     vi.resetModules();
+    vi.stubEnv("DATABASE_URL", "");
     const { createOrder: co } = await import("@/lib/db");
     const result = await co({
       customer_name: "Test",
