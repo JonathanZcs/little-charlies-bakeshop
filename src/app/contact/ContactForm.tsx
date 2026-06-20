@@ -90,7 +90,7 @@ export default function ContactForm() {
       </div>
 
       {/* Order Type + Event Date */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-end">
         <div>
           <label htmlFor="orderType" className={labelClass}>
             Order Type <span className="text-rose">*</span>
@@ -121,9 +121,8 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="eventDate" className={labelClass}>
-            Event Date <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(optional)</span>
+            Event Date <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(optional · 3 day min.)</span>
           </label>
-          <p className="text-xs text-brown/40 italic mb-1.5">Minimum 3 days lead time required.</p>
           <input
             id="eventDate"
             name="eventDate"

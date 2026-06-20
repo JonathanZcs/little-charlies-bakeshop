@@ -47,14 +47,18 @@ export async function POST(request: NextRequest) {
       details:        (inquiry as string).trim(),
     });
 
-    // 2. Send notification email to Alexis
-    await getResend().emails.send({
-      from: "Order Inquiry - Little Charlie's <onboarding@resend.dev>",
-      to: process.env.VERCEL_ENV === "production" ? "littlecharliesbakeshop@hotmail.com" : "jonz0917@yahoo.com",
-      replyTo: email as string,
-      subject: `Order Inquiry — ${name} (${orderType})`,
-      html: buildOrderEmail({ name: name as string, phone: phone as string, email: email as string, orderType: orderType as string, eventDateStr, inquiry: inquiry as string, orderId: order?.id }),
-    });
+    // 2. Send notification email to Alexis (skip gracefully if API key not configured)
+    if (process.env.RESEND_API_KEY) {
+      await getResend().emails.send({
+        from: "Order Inquiry - Little Charlie's <onboarding@resend.dev>",
+        to: process.env.VERCEL_ENV === "production" ? "littlecharliesbakeshop@hotmail.com" : "jonz0917@yahoo.com",
+        replyTo: email as string,
+        subject: `Order Inquiry — ${name} (${orderType})`,
+        html: buildOrderEmail({ name: name as string, phone: phone as string, email: email as string, orderType: orderType as string, eventDateStr, inquiry: inquiry as string, orderId: order?.id }),
+      }).catch((e: unknown) => console.error("[contact] Email failed:", e));
+    } else {
+      console.warn("[contact] RESEND_API_KEY not set — skipping email");
+    }
 
     // 3. Send SMS alert to Alexis
     if (order) {
