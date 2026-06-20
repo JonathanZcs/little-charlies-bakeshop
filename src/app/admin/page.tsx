@@ -169,7 +169,7 @@ export default async function AdminPage({
                 activeTab === "past" ? "bg-rose text-cream" : "border border-parchment text-brown hover:border-rose hover:text-rose"
               }`}
             >
-              Past Orders
+              Past Inquiries
               {past.length > 0 && (
                 <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${activeTab === "past" ? "bg-white/20 text-cream" : "bg-parchment text-brown/60"}`}>
                   {past.length}
@@ -190,7 +190,7 @@ export default async function AdminPage({
 
         {ordersForTab.length === 0 ? (
           <div className="text-center py-20 text-brown/40">
-            <p className="text-lg font-light">No {activeTab === "past" ? "past orders" : "upcoming inquiries"}.</p>
+            <p className="text-lg font-light">No {activeTab === "past" ? "past inquiries" : "upcoming inquiries"}.</p>
           </div>
         ) : sortMode === "newest" || !groups ? (
           /* Flat list — newest received first */
@@ -213,7 +213,7 @@ export default async function AdminPage({
                     )}
                   </div>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${group.countClasses}`}>
-                    {group.orders.length} {group.orders.length === 1 ? "order" : "orders"}
+                    {group.orders.length} {group.orders.length === 1 ? "inquiry" : "inquiries"}
                   </span>
                 </div>
                 <div className="space-y-3">

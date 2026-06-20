@@ -43,8 +43,8 @@ export default function ContactForm() {
         </div>
         <h2 className="font-serif text-2xl text-mocha mb-2">Inquiry Received!</h2>
         <p className="text-brown font-light max-w-sm mx-auto leading-relaxed">
-          Thank you! We&apos;ll be in touch soon. Please note your order is{" "}
-          <strong>not confirmed</strong> until we reach out and a deposit is received.
+          Thank you! We&apos;ll be in touch soon. This is an inquiry only —{" "}
+          your order is <strong>not confirmed</strong> until we reach out directly.
         </p>
         <button
           onClick={() => setStatus("idle")}
