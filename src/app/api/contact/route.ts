@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     // Upload inspiration photos to Vercel Blob (skip gracefully if token not set)
     const imageUrls: string[] = [];
-    if (photos.length > 0 && process.env.BLOB_READ_WRITE_TOKEN) {
+    if (photos.length > 0 && (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID)) {
       await Promise.all(
         photos
           .filter((f) => f.size > 0)
