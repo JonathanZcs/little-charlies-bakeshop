@@ -72,16 +72,16 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href="/shop"
+                href="/contact"
                 className="bg-rose text-cream px-7 py-3 text-xs tracking-widest uppercase hover:bg-dusty-rose transition-colors"
               >
-                Shop Now
+                Order Now
               </Link>
               <Link
-                href="/contact"
+                href="/menu"
                 className="border border-rose text-rose px-7 py-3 text-xs tracking-widest uppercase hover:bg-blush transition-colors"
               >
-                Place an Order
+                View Menu
               </Link>
             </div>
           </div>
@@ -176,10 +176,10 @@ export default function Home() {
           </div>
           <div className="text-center mt-12">
             <Link
-              href="/shop"
+              href="/menu"
               className="text-rose text-xs tracking-widest uppercase border-b border-rose pb-0.5 hover:text-dusty-rose transition-colors"
             >
-              View Full Shop &rarr;
+              View Full Menu &rarr;
             </Link>
           </div>
         </div>

@@ -198,7 +198,7 @@ function OrderCard({ order }: { order: Order }) {
 
       {order.status === "accepted" && !order.square_invoice_url && (
         <div className="flex flex-wrap gap-3 pt-4 border-t border-parchment">
-          <SendInvoiceForm orderId={order.id} />
+          {process.env.SQUARE_ACCESS_TOKEN && <SendInvoiceForm orderId={order.id} />}
           <DeclineForm orderId={order.id} label="Cancel" />
         </div>
       )}
