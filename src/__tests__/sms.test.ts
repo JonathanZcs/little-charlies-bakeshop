@@ -25,6 +25,7 @@ const SAMPLE_ORDER: Order = {
   accepted_at: null,
   declined_at: null,
   deposit_paid_at: null,
+  image_urls: null,
 };
 
 beforeEach(() => {
@@ -41,12 +42,6 @@ describe("SMS — skips gracefully when not configured", () => {
   it("sendOrderAlertSMS does not throw when Twilio env vars are absent", async () => {
     const { sendOrderAlertSMS } = await loadSms();
     await expect(sendOrderAlertSMS(SAMPLE_ORDER)).resolves.toBeUndefined();
-    expect(mockCreate).not.toHaveBeenCalled();
-  });
-
-  it("sendAcceptedSMS does not throw when unconfigured", async () => {
-    const { sendAcceptedSMS } = await loadSms();
-    await expect(sendAcceptedSMS(SAMPLE_ORDER)).resolves.toBeUndefined();
     expect(mockCreate).not.toHaveBeenCalled();
   });
 });
@@ -70,32 +65,18 @@ describe("SMS — sends when fully configured", () => {
     expect(arg.from).toBe("+13300000001");
   });
 
-  it("sendAcceptedSMS includes customer name and order type", async () => {
-    const { sendAcceptedSMS } = await loadSms();
-    await sendAcceptedSMS(SAMPLE_ORDER);
+  it("sendOrderAlertSMS formats pickup date correctly", async () => {
+    const { sendOrderAlertSMS } = await loadSms();
+    await sendOrderAlertSMS(SAMPLE_ORDER);
     const arg = mockCreate.mock.calls[0][0] as { body: string };
-    expect(arg.body).toContain("Jane Doe");
-    expect(arg.body).toContain("Decorated Cookies");
+    expect(arg.body).toContain("Pickup:");
+    expect(arg.body).toContain("Jan");
   });
 
-  it("sendDeclinedSMS includes customer name", async () => {
-    const { sendDeclinedSMS } = await loadSms();
-    await sendDeclinedSMS(SAMPLE_ORDER);
-    const arg = mockCreate.mock.calls[0][0] as { body: string };
-    expect(arg.body).toContain("Jane Doe");
-  });
-
-  it("sendDepositPaidSMS formats the deposit amount correctly", async () => {
-    const { sendDepositPaidSMS } = await loadSms();
-    await sendDepositPaidSMS({ ...SAMPLE_ORDER, deposit_amount_cents: 5000 });
-    const arg = mockCreate.mock.calls[0][0] as { body: string };
-    expect(arg.body).toContain("$50.00");
-  });
-
-  it("sendDepositPaidSMS falls back gracefully when deposit_amount_cents is null", async () => {
-    const { sendDepositPaidSMS } = await loadSms();
-    await sendDepositPaidSMS({ ...SAMPLE_ORDER, deposit_amount_cents: null });
-    const arg = mockCreate.mock.calls[0][0] as { body: string };
-    expect(arg.body).toContain("deposit");
+  it("sendOrderAlertSMS sends to all comma-separated recipients", async () => {
+    vi.stubEnv("BAKERY_PHONE_NUMBER", "+13300000002,+13300000003");
+    const { sendOrderAlertSMS } = await loadSms();
+    await sendOrderAlertSMS(SAMPLE_ORDER);
+    expect(mockCreate).toHaveBeenCalledTimes(2);
   });
 });

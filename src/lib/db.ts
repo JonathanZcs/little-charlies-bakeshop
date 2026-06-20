@@ -55,12 +55,19 @@ export async function createOrder(data: {
   return rows[0] as Order;
 }
 
+function normalizeEventDate(d: unknown): string | null {
+  if (!d) return null;
+  if (d instanceof Date) return d.toISOString().slice(0, 10);
+  if (typeof d === "string") return d.slice(0, 10); // trim any time suffix
+  return null;
+}
+
 export async function getOrders(status?: OrderStatus): Promise<Order[]> {
   if (!sql) return [];
   const rows = status
     ? await sql`SELECT * FROM orders WHERE status = ${status} ORDER BY created_at DESC`
     : await sql`SELECT * FROM orders ORDER BY created_at DESC`;
-  return rows as Order[];
+  return (rows as Order[]).map((row) => ({ ...row, event_date: normalizeEventDate(row.event_date) }));
 }
 
 export async function getOrder(id: string): Promise<Order | null> {
