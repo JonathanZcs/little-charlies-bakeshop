@@ -124,9 +124,9 @@ function OrderCard({ order }: { order: Order }) {
   return (
     <div className="bg-cream border border-parchment p-6">
       {/* Top row */}
-      <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
         <div>
-          <div className="flex items-center gap-3 mb-1">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
             <span className="font-serif text-lg text-mocha">{order.customer_name}</span>
             <span className={`text-xs px-2 py-0.5 font-medium ${STATUS_COLORS[order.status as OrderStatus]}`}>
               {STATUS_LABELS[order.status as OrderStatus]}
@@ -136,9 +136,11 @@ function OrderCard({ order }: { order: Order }) {
           {dateStr && <p className="text-xs text-rose mt-0.5">📅 {dateStr}</p>}
           <p className="text-xs text-brown/40 mt-1">Received {createdStr}</p>
         </div>
-        <div className="text-right text-sm space-y-0.5">
-          <p className="text-brown">{order.customer_phone}</p>
-          <a href={`mailto:${order.customer_email}`} className="text-rose hover:underline block">
+        <div className="sm:text-right text-sm space-y-0.5 shrink-0">
+          <a href={`tel:${order.customer_phone.replace(/\D/g, "")}`} className="text-brown hover:text-rose transition-colors block">
+            {order.customer_phone}
+          </a>
+          <a href={`mailto:${order.customer_email}`} className="text-rose hover:underline block break-all">
             {order.customer_email}
           </a>
         </div>
@@ -203,15 +205,15 @@ function AcceptForm({ orderId }: { orderId: string }) {
   }
 
   return (
-    <form action={accept} className="flex gap-2 items-center flex-wrap">
+    <form action={accept} className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto sm:items-center">
       <input
         name="note"
         placeholder="Optional note to customer..."
-        className="border border-parchment bg-warm-white px-3 py-2 text-xs text-mocha focus:outline-none focus:border-rose w-64"
+        className="border border-parchment bg-warm-white px-3 py-2 text-xs text-mocha focus:outline-none focus:border-rose w-full sm:w-64"
       />
       <button
         type="submit"
-        className="bg-rose text-cream px-5 py-2 text-xs tracking-widest uppercase hover:bg-dusty-rose transition-colors cursor-pointer"
+        className="bg-rose text-cream px-5 py-2 text-xs tracking-widest uppercase hover:bg-dusty-rose transition-colors cursor-pointer whitespace-nowrap"
       >
         ✓ Accept
       </button>
@@ -232,15 +234,15 @@ function DeclineForm({ orderId, label = "✕ Decline" }: { orderId: string; labe
   }
 
   return (
-    <form action={decline} className="flex gap-2 items-center">
+    <form action={decline} className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto sm:items-center">
       <input
         name="note"
         placeholder="Reason (optional)..."
-        className="border border-parchment bg-warm-white px-3 py-2 text-xs text-mocha focus:outline-none focus:border-rose w-48"
+        className="border border-parchment bg-warm-white px-3 py-2 text-xs text-mocha focus:outline-none focus:border-rose w-full sm:w-48"
       />
       <button
         type="submit"
-        className="border border-brown/30 text-brown/60 px-5 py-2 text-xs tracking-widest uppercase hover:border-red-400 hover:text-red-500 transition-colors cursor-pointer"
+        className="border border-brown/30 text-brown/60 px-5 py-2 text-xs tracking-widest uppercase hover:border-red-400 hover:text-red-500 transition-colors cursor-pointer whitespace-nowrap"
       >
         {label}
       </button>
@@ -262,8 +264,8 @@ function SendInvoiceForm({ orderId }: { orderId: string }) {
   }
 
   return (
-    <form action={sendInvoice} className="flex gap-2 items-center flex-wrap">
-      <div className="flex items-center border border-parchment bg-warm-white">
+    <form action={sendInvoice} className="flex flex-col sm:flex-row gap-2 sm:items-center">
+      <div className="flex items-center border border-parchment bg-warm-white self-start">
         <span className="px-3 py-2 text-xs text-brown/60">$</span>
         <input
           name="deposit"
