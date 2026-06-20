@@ -15,13 +15,31 @@ async function logout() {
   redirect("/admin/login");
 }
 
-export default async function AdminPage() {
+function isPast(eventDate: string | null): boolean {
+  if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) return false;
+  const pickup = new Date(eventDate + "T12:00:00Z");
+  const now = new Date();
+  const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
+  return pickup < todayUTC;
+}
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
   const cookieStore = await cookies();
   if (!isValidSession(cookieStore.get(ADMIN_COOKIE)?.value)) {
     redirect("/admin/login");
   }
 
-  const orders = await getOrders();
+  const params = await searchParams;
+  const activeTab = params.tab === "past" ? "past" : "upcoming";
+
+  const allOrders = await getOrders();
+  const upcoming = allOrders.filter((o) => !isPast(o.event_date));
+  const past     = allOrders.filter((o) => isPast(o.event_date));
+  const orders   = activeTab === "past" ? past : upcoming;
 
   return (
     <div className="min-h-screen bg-warm-white">
@@ -44,15 +62,39 @@ export default async function AdminPage() {
       </header>
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <p className="text-xs tracking-widest uppercase text-brown/40">
-            {orders.length} {orders.length === 1 ? "inquiry" : "inquiries"} total
-          </p>
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8">
+          <Link
+            href="/admin"
+            className={`px-4 py-2 text-xs tracking-widest uppercase transition-colors flex items-center gap-2 ${
+              activeTab === "upcoming" ? "bg-rose text-cream" : "border border-parchment text-brown hover:border-rose hover:text-rose"
+            }`}
+          >
+            Upcoming
+            {upcoming.length > 0 && (
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${activeTab === "upcoming" ? "bg-white/20 text-cream" : "bg-parchment text-brown/60"}`}>
+                {upcoming.length}
+              </span>
+            )}
+          </Link>
+          <Link
+            href="/admin?tab=past"
+            className={`px-4 py-2 text-xs tracking-widest uppercase transition-colors flex items-center gap-2 ${
+              activeTab === "past" ? "bg-rose text-cream" : "border border-parchment text-brown hover:border-rose hover:text-rose"
+            }`}
+          >
+            Past
+            {past.length > 0 && (
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${activeTab === "past" ? "bg-white/20 text-cream" : "bg-parchment text-brown/60"}`}>
+                {past.length}
+              </span>
+            )}
+          </Link>
         </div>
 
         {orders.length === 0 ? (
           <div className="text-center py-20 text-brown/40">
-            <p className="text-lg font-light">No order inquiries yet.</p>
+            <p className="text-lg font-light">No {activeTab === "past" ? "past" : "upcoming"} inquiries.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -72,7 +114,7 @@ function getPickupUrgency(eventDate: string | null): { label: string; classes: s
   const now = new Date();
   const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 0, 0));
   const diffDays = Math.round((pickup.getTime() - todayUTC.getTime()) / (1000 * 60 * 60 * 24));
-  if (diffDays < 0)  return { label: "PAST DUE",    classes: "bg-red-100 text-red-700 border border-red-200" };
+  if (diffDays < 0)  return null;
   if (diffDays === 0) return { label: "TODAY",       classes: "bg-red-100 text-red-700 border border-red-200" };
   if (diffDays === 1) return { label: "TOMORROW",    classes: "bg-amber-100 text-amber-700 border border-amber-200" };
   if (diffDays <= 3)  return { label: `IN ${diffDays} DAYS`, classes: "bg-amber-50 text-amber-600 border border-amber-200" };
