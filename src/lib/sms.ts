@@ -18,18 +18,20 @@ export async function sendOrderAlertSMS(order: Order) {
     return;
   }
 
+  const recipients = toNumber.split(",").map((n) => n.trim()).filter(Boolean);
+
   const dateStr = order.event_date
     ? new Date(order.event_date + "T12:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
     : "no date set";
 
-  await c.messages.create({
-    from: fromNumber,
-    to: toNumber,
-    body:
-      `🎂 New Order Inquiry!\n` +
-      `${order.order_type} — ${order.customer_name}\n` +
-      `Pickup: ${dateStr}\n` +
-      `Phone: ${order.customer_phone}\n` +
-      `Review at: littlecharliesbakeshop.com/admin`,
-  });
+  const body =
+    `🎂 New Order Inquiry!\n` +
+    `${order.order_type} — ${order.customer_name}\n` +
+    `Pickup: ${dateStr}\n` +
+    `Phone: ${order.customer_phone}\n` +
+    `Review at: littlecharliesbakeshop.com/admin`;
+
+  await Promise.all(
+    recipients.map((to) => c.messages.create({ from: fromNumber, to, body }))
+  );
 }
