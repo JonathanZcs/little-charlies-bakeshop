@@ -3,6 +3,7 @@ import type { Order, OrderStatus } from "@/lib/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
 
 export const metadata = { title: "Admin — Orders" };
 export const dynamic = "force-dynamic";
@@ -26,7 +27,7 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
 async function logout() {
   "use server";
   const cookieStore = await cookies();
-  cookieStore.delete("lc_admin_session");
+  cookieStore.delete(ADMIN_COOKIE);
   redirect("/admin/login");
 }
 
@@ -35,6 +36,11 @@ export default async function AdminPage({
 }: {
   searchParams: Promise<{ tab?: string }>;
 }) {
+  const cookieStore = await cookies();
+  if (!isValidSession(cookieStore.get(ADMIN_COOKIE)?.value)) {
+    redirect("/admin/login");
+  }
+
   const params = await searchParams;
   const activeTab = (params.tab as OrderStatus | "all") ?? "pending";
 

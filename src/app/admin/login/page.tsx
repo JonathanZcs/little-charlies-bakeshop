@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { createSessionToken, ADMIN_COOKIE } from "@/lib/admin-session";
 
 export const metadata = { title: "Admin Login" };
 
@@ -22,7 +23,7 @@ export default async function AdminLoginPage({
     }
 
     const cookieStore = await cookies();
-    cookieStore.set("lc_admin_session", adminPassword, {
+    cookieStore.set(ADMIN_COOKIE, createSessionToken(adminPassword), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

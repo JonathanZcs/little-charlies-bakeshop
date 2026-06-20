@@ -118,7 +118,6 @@ describe("graceful no-op when DATABASE_URL is not set", () => {
     // Re-import with no DATABASE_URL
     vi.unstubAllEnvs();
     vi.resetModules();
-    vi.mock("@neondatabase/serverless", () => ({ neon: () => mockSql }));
     const { createOrder: co } = await import("@/lib/db");
     const result = await co({
       customer_name: "Test",
