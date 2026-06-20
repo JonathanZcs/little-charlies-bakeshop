@@ -68,7 +68,7 @@ export default function ContactPage() {
               </h3>
               <div className="text-brown text-sm leading-7 space-y-1">
                 <p>Tue &ndash; Fri: 7:30AM &ndash; 4PM</p>
-                <p className="pl-3 text-brown/50 text-xs">drive-thru from 7:30 &middot; storefront from 9</p>
+                <p className="pl-3 text-brown/50 text-xs">drive-thru from 7:30 + storefront from 9</p>
                 <p>Sat: 9AM &ndash; 2PM</p>
                 <p>Sun &ndash; Mon: Closed</p>
               </div>

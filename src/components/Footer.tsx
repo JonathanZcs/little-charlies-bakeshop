@@ -26,7 +26,7 @@ export default function Footer() {
               <dt>Tuesday &ndash; Friday</dt>
               <dd className="text-right">
                 <span className="block">7:30AM &ndash; 4PM</span>
-                <span className="block text-parchment/50 text-xs">drive-thru from 7:30 &middot; storefront from 9</span>
+                <span className="block text-parchment/50 text-xs">drive-thru from 7:30 + storefront from 9</span>
               </dd>
             </div>
             <div className="flex justify-between gap-4">
