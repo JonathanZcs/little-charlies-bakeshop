@@ -98,8 +98,8 @@ function buildAcceptanceEmail(name: string, orderType: string, note?: string | n
     ${note ? `<br><br>${note}` : ""}
   </p>
   <p style="font-size:14px;color:#3d2b1f;line-height:1.8;">
-    We&rsquo;ll be sending you a deposit invoice shortly to confirm your order.
-    Once the deposit is received, your order will be locked in.
+    We&rsquo;ll be in touch soon to work out the details and arrange a deposit.
+    Please note that your order is <strong>not confirmed</strong> until a deposit has been received.
   </p>
   <p style="font-size:14px;color:#3d2b1f;line-height:1.8;">
     Feel free to reply to this email or call us at <strong>234-244-4104</strong> with any questions!
