@@ -153,7 +153,7 @@ const bakeryCards: MenuCard[] = [
     images: ["/images/menu-macarons.jpg", "/images/macarons.jpg"],
     items: [
       { name: "6-Pack", price: "$18" },
-      { name: "1 Dozen", price: "$34" },
+      { name: "1 Dozen", price: "$36" },
     ],
     note: "Seasonal flavors. Pre-order recommended.",
   },
