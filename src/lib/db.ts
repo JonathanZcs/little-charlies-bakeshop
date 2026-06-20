@@ -32,6 +32,7 @@ export type Order = {
   accepted_at: string | null;
   declined_at: string | null;
   deposit_paid_at: string | null;
+  image_urls: string[] | null;
 };
 
 export async function createOrder(data: {
@@ -41,12 +42,14 @@ export async function createOrder(data: {
   order_type: string;
   event_date: string | null;
   details: string;
+  image_urls?: string[];
 }): Promise<Order | null> {
   if (!sql) return null;
+  const imageUrlsJson = JSON.stringify(data.image_urls ?? []);
   const rows = await sql`
-    INSERT INTO orders (customer_name, customer_phone, customer_email, order_type, event_date, details)
+    INSERT INTO orders (customer_name, customer_phone, customer_email, order_type, event_date, details, image_urls)
     VALUES (${data.customer_name}, ${data.customer_phone}, ${data.customer_email},
-            ${data.order_type}, ${data.event_date}, ${data.details})
+            ${data.order_type}, ${data.event_date}, ${data.details}, ${imageUrlsJson}::jsonb)
     RETURNING *
   `;
   return rows[0] as Order;

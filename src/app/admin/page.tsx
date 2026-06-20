@@ -175,6 +175,21 @@ function OrderCard({ order }: { order: Order }) {
         {order.details}
       </div>
 
+      {/* Inspiration photos */}
+      {order.image_urls && order.image_urls.length > 0 && (
+        <div className="mb-4">
+          <p className="text-xs tracking-widest uppercase text-brown/40 mb-2">Inspiration Photos</p>
+          <div className="flex flex-wrap gap-2">
+            {order.image_urls.map((url, i) => (
+              <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={url} alt={`Inspiration ${i + 1}`} className="w-24 h-24 object-cover border border-parchment hover:border-rose transition-colors" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Square invoice link */}
       {order.square_invoice_url && (
         <div className="mb-4 text-xs text-brown/60">
@@ -238,8 +253,8 @@ function AcceptForm({ orderId }: { orderId: string }) {
     <form action={accept} className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto sm:items-center">
       <input
         name="note"
-        placeholder="Optional note to customer..."
-        className="border border-parchment bg-warm-white px-3 py-2 text-xs text-mocha focus:outline-none focus:border-rose w-full sm:w-64"
+        placeholder="Personal message added to acceptance email (optional)..."
+        className="border border-parchment bg-warm-white px-3 py-2 text-xs text-mocha focus:outline-none focus:border-rose w-full sm:w-72"
       />
       <button
         type="submit"

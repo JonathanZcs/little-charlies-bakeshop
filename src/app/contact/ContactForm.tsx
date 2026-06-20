@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -11,29 +11,23 @@ const labelClass = "block text-xs tracking-widest uppercase text-brown mb-1.5 fo
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [photoNames, setPhotoNames] = useState<string[]>([]);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
 
     const form = e.currentTarget;
-    const data = {
-      name:      (form.elements.namedItem("name")      as HTMLInputElement).value,
-      phone:     (form.elements.namedItem("phone")     as HTMLInputElement).value,
-      email:     (form.elements.namedItem("email")     as HTMLInputElement).value,
-      orderType: (form.elements.namedItem("orderType") as HTMLSelectElement).value,
-      eventDate: (form.elements.namedItem("eventDate") as HTMLInputElement).value,
-      inquiry:   (form.elements.namedItem("inquiry")   as HTMLTextAreaElement).value,
-    };
+    const data = new FormData(form);
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch("/api/contact", { method: "POST", body: data });
       setStatus(res.ok ? "sent" : "error");
-      if (res.ok) form.reset();
+      if (res.ok) {
+        form.reset();
+        setPhotoNames([]);
+      }
     } catch {
       setStatus("error");
     }
@@ -49,8 +43,8 @@ export default function ContactForm() {
         </div>
         <h2 className="font-serif text-2xl text-mocha mb-2">Inquiry Received!</h2>
         <p className="text-brown font-light max-w-sm mx-auto leading-relaxed">
-          Thank you! We&apos;ll be in touch soon. Remember, your order isn&apos;t
-          confirmed until a deposit is received.
+          Thank you! We&apos;ll be in touch soon. Please note your order is{" "}
+          <strong>not confirmed</strong> until we reach out and a deposit is received.
         </p>
         <button
           onClick={() => setStatus("idle")}
@@ -147,6 +141,47 @@ export default function ContactForm() {
           className={inputClass + " resize-none"}
           placeholder="Describe your order — theme, size, quantity, flavors, allergies, or any special requests..."
         />
+      </div>
+
+      {/* Inspiration Photos */}
+      <div>
+        <label className={labelClass}>
+          Inspiration Photos <span className="text-brown/40 normal-case tracking-normal text-xs font-light">(optional · up to 5 images)</span>
+        </label>
+        <div
+          className="border border-dashed border-parchment bg-cream px-4 py-5 text-center cursor-pointer hover:border-rose transition-colors"
+          onClick={() => fileRef.current?.click()}
+        >
+          <input
+            ref={fileRef}
+            id="photos"
+            name="photos"
+            type="file"
+            multiple
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const files = Array.from(e.currentTarget.files ?? []).slice(0, 5);
+              setPhotoNames(files.map((f) => f.name));
+            }}
+          />
+          {photoNames.length > 0 ? (
+            <div className="space-y-1">
+              {photoNames.map((n) => (
+                <p key={n} className="text-xs text-rose truncate">{n}</p>
+              ))}
+              <p className="text-xs text-brown/40 mt-2">Click to change</p>
+            </div>
+          ) : (
+            <div>
+              <svg className="w-6 h-6 text-parchment mx-auto mb-2" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+              </svg>
+              <p className="text-xs text-brown/50">Click to upload inspiration photos</p>
+              <p className="text-xs text-brown/30 mt-1">JPG, PNG, HEIC — up to 5 photos</p>
+            </div>
+          )}
+        </div>
       </div>
 
       <p className="text-xs text-brown/50 italic">

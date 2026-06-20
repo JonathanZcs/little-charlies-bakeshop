@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS orders (
   -- Admin
   admin_note           TEXT,
 
+  -- Inspiration photos (uploaded by customer at inquiry time)
+  image_urls           JSONB NOT NULL DEFAULT '[]',
+
   -- Square
   square_invoice_id    TEXT,
   square_invoice_url   TEXT,
@@ -38,3 +41,6 @@ CREATE TABLE IF NOT EXISTS orders (
 -- Index for fast admin dashboard queries
 CREATE INDEX IF NOT EXISTS orders_status_idx ON orders(status);
 CREATE INDEX IF NOT EXISTS orders_created_at_idx ON orders(created_at DESC);
+
+-- Migration: add image_urls column (run if table already exists)
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS image_urls JSONB NOT NULL DEFAULT '[]';

@@ -47,13 +47,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop CTA */}
-        <Link
-          href="/contact"
-          className="hidden md:inline-block shrink-0 border border-rose text-rose text-xs tracking-widest uppercase px-5 py-2.5 hover:bg-rose hover:text-cream transition-colors"
-        >
-          Order Now
-        </Link>
+        {/* Desktop CTA — Phase 2: restore when Square shop goes live */}
 
         {/* Mobile hamburger */}
         <button
@@ -96,15 +90,7 @@ export default function Navbar() {
                 </Link>
               </li>
             ))}
-            <li className="pt-2 border-t border-parchment">
-              <Link
-                href="/contact"
-                className="inline-block border border-rose text-rose text-xs tracking-widest uppercase px-6 py-2.5 hover:bg-rose hover:text-cream transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                Order Now
-              </Link>
-            </li>
+            {/* Mobile CTA — Phase 2: restore when Square shop goes live */}
           </ul>
         </div>
       )}
