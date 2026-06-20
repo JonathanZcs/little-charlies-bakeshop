@@ -65,8 +65,8 @@ export default function AboutPage() {
             <div className="space-y-5 text-brown leading-8 font-light">
               <p>
                 Little Charlie&apos;s Bakeshop began in 2016, born out of a
-                mother&apos;s love for her son Charlie. What started as a handful
-                of homemade goodies for his baptism celebration quickly turned
+                mother&apos;s love for her daughter Charlie. What started as a handful
+                of homemade goodies for her baptism celebration quickly turned
                 into something much bigger &mdash; a true passion for the craft of
                 baking.
               </p>

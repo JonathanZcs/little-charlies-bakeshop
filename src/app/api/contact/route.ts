@@ -86,7 +86,9 @@ function buildOrderEmail(opts: {
   orderId?: string;
 }) {
   const { name, phone, email, orderType, eventDateStr, inquiry, orderId } = opts;
-  const adminUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://littlecharliesbakeshop.com"}/admin`;
+  const adminUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}/admin`
+    : `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://littlecharliesbakeshop.com"}/admin`;
 
   return `
 <!DOCTYPE html>
@@ -148,7 +150,7 @@ function buildOrderEmail(opts: {
         <tr>
           <td style="background:#f9f6f2;padding:24px 40px;text-align:center;border-top:1px solid #e8e0d5;">
             <a href="${adminUrl}" style="display:inline-block;background:#5c7a5c;color:#ffffff;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px 32px;text-decoration:none;font-weight:bold;margin-right:8px;">View in Admin</a>
-            <a href="mailto:${email}?subject=Re%3A Your Order Inquiry — Little Charlie%27s Bakeshop&body=Hi ${encodeURIComponent(name.split(" ")[0])}%2C%0D%0A%0D%0AThank you for your inquiry! I%27d love to help — %0D%0A%0D%0A%0D%0A%0D%0ALittle Charlie%27s Bakeshop%0D%0ACortland%2C Ohio %7C 234-244-4104" style="display:inline-block;background:#3d2b1f;color:#ffffff;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px 32px;text-decoration:none;font-weight:bold;">Email ${name.split(" ")[0]} Back</a>
+            <a href="mailto:${email}?subject=Re%3A%20Your%20Order%20Inquiry%20%E2%80%94%20Little%20Charlie%27s%20Bakeshop&body=Hi%20${encodeURIComponent(name.split(" ")[0])}%2C%0D%0A%0D%0AThank%20you%20for%20reaching%20out%20to%20Little%20Charlie%27s%20Bakeshop!%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A--%0D%0AAlexis%0D%0ALittle%20Charlie%27s%20Bakeshop%20%7C%20Cortland%2C%20Ohio%20%7C%20234-244-4104" style="display:inline-block;background:#3d2b1f;color:#ffffff;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px 32px;text-decoration:none;font-weight:bold;">Email ${name.split(" ")[0]} Back</a>
           </td>
         </tr>
 
