@@ -5,6 +5,11 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
 
+function selfBaseUrl() {
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+}
+
 export const metadata = { title: "Admin — Orders" };
 export const dynamic = "force-dynamic";
 
@@ -44,9 +49,15 @@ export default async function AdminPage({
   const params = await searchParams;
   const activeTab = (params.tab as OrderStatus | "all") ?? "pending";
 
-  const orders = activeTab === "all"
-    ? await getOrders()
-    : await getOrders(activeTab as OrderStatus);
+  const [orders, allOrders] = await Promise.all([
+    activeTab === "all" ? getOrders() : getOrders(activeTab as OrderStatus),
+    getOrders(),
+  ]);
+
+  const countByStatus = allOrders.reduce<Record<string, number>>((acc, o) => {
+    acc[o.status] = (acc[o.status] ?? 0) + 1;
+    return acc;
+  }, {});
 
   const tabs: Array<{ key: string; label: string }> = [
     { key: "pending",      label: "Pending" },
@@ -80,19 +91,29 @@ export default async function AdminPage({
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Status tabs */}
         <div className="flex flex-wrap gap-2 mb-8">
-          {tabs.map((tab) => (
-            <Link
-              key={tab.key}
-              href={`/admin?tab=${tab.key}`}
-              className={`px-4 py-2 text-xs tracking-widest uppercase transition-colors ${
-                activeTab === tab.key
-                  ? "bg-rose text-cream"
-                  : "border border-parchment text-brown hover:border-rose hover:text-rose"
-              }`}
-            >
-              {tab.label}
-            </Link>
-          ))}
+          {tabs.map((tab) => {
+            const count = tab.key === "all" ? allOrders.length : (countByStatus[tab.key] ?? 0);
+            return (
+              <Link
+                key={tab.key}
+                href={`/admin?tab=${tab.key}`}
+                className={`px-4 py-2 text-xs tracking-widest uppercase transition-colors flex items-center gap-2 ${
+                  activeTab === tab.key
+                    ? "bg-rose text-cream"
+                    : "border border-parchment text-brown hover:border-rose hover:text-rose"
+                }`}
+              >
+                {tab.label}
+                {count > 0 && (
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                    activeTab === tab.key ? "bg-white/20 text-cream" : "bg-parchment text-brown/60"
+                  }`}>
+                    {count}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Orders */}
@@ -197,7 +218,7 @@ function AcceptForm({ orderId }: { orderId: string }) {
     "use server";
     const note = formData.get("note") as string | null;
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/admin/orders/${orderId}`,
+      `${selfBaseUrl()}/api/admin/orders/${orderId}`,
       { method: "PATCH", body: JSON.stringify({ action: "accept", note }), headers: { "Content-Type": "application/json", "x-admin-key": process.env.ADMIN_PASSWORD ?? "" } }
     );
     if (!res.ok) console.error("Accept failed", await res.text());
@@ -226,7 +247,7 @@ function DeclineForm({ orderId, label = "✕ Decline" }: { orderId: string; labe
     "use server";
     const note = formData.get("note") as string | null;
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/admin/orders/${orderId}`,
+      `${selfBaseUrl()}/api/admin/orders/${orderId}`,
       { method: "PATCH", body: JSON.stringify({ action: "decline", note }), headers: { "Content-Type": "application/json", "x-admin-key": process.env.ADMIN_PASSWORD ?? "" } }
     );
     if (!res.ok) console.error("Decline failed", await res.text());
@@ -256,7 +277,7 @@ function SendInvoiceForm({ orderId }: { orderId: string }) {
     const depositDollars = parseFloat((formData.get("deposit") as string) ?? "50");
     const depositCents = Math.round(depositDollars * 100);
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/admin/orders/${orderId}`,
+      `${selfBaseUrl()}/api/admin/orders/${orderId}`,
       { method: "PATCH", body: JSON.stringify({ action: "send_invoice", depositCents }), headers: { "Content-Type": "application/json", "x-admin-key": process.env.ADMIN_PASSWORD ?? "" } }
     );
     if (!res.ok) console.error("Invoice failed", await res.text());
@@ -290,7 +311,7 @@ function MarkCompletedForm({ orderId }: { orderId: string }) {
   async function complete() {
     "use server";
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/admin/orders/${orderId}`,
+      `${selfBaseUrl()}/api/admin/orders/${orderId}`,
       { method: "PATCH", body: JSON.stringify({ action: "complete" }), headers: { "Content-Type": "application/json", "x-admin-key": process.env.ADMIN_PASSWORD ?? "" } }
     );
     if (!res.ok) console.error("Complete failed", await res.text());
