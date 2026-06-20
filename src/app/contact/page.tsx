@@ -67,7 +67,9 @@ export default function ContactPage() {
                 Hours
               </h3>
               <p className="text-brown text-sm leading-7">
-                Tue &ndash; Sat: 9AM &ndash; 4PM
+                Tue &ndash; Fri: 7:30AM &ndash; 4PM
+                <br />
+                Sat: 9AM &ndash; 3PM
                 <br />
                 Sun &ndash; Mon: Closed
               </p>

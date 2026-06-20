@@ -112,7 +112,13 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <span className="text-gold">&#10022;</span>
             <span className="text-cream/90 tracking-wide">
-              Tue &ndash; Sat &nbsp;9AM &ndash; 4PM
+              Tue &ndash; Fri &nbsp;7:30AM &ndash; 4PM
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-gold">&#10022;</span>
+            <span className="text-cream/90 tracking-wide">
+              Sat &nbsp;9AM &ndash; 3PM
             </span>
           </div>
           <div className="flex items-center gap-3">
