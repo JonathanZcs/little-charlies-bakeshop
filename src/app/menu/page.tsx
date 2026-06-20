@@ -22,14 +22,8 @@ type MenuCard = {
 const drinksCards: MenuCard[] = [
   {
     name: "Lattes",
-    imgClass: "object-top",
-    images: [
-      "/images/latte.jpg",
-      "/images/coffee-1.jpg",
-      "/images/coffee-2.jpg",
-      "/images/coffee-4.jpg",
-      "/images/coffee-6.jpg",
-    ],
+    imgClass: "object-center",
+    images: ["/images/coffee-1.jpg"],
     items: [
       { name: "White Chocolate Caramel" },
       { name: "Cinnamon Roll" },
@@ -41,8 +35,8 @@ const drinksCards: MenuCard[] = [
   },
   {
     name: "Specialty Drinks",
-    imgClass: "object-top",
-    images: ["/images/matcha.jpg", "/images/coffee-6.jpg"],
+    imgClass: "object-center",
+    images: ["/images/matcha.jpg"],
     items: [
       {
         name: "Dirty Coconut",
