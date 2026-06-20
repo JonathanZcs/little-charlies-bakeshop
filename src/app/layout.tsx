@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Lato, Dancing_Script } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SiteShell from "@/components/SiteShell";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -63,9 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${lato.variable} ${dancing.variable}`}>
       <body className="min-h-screen flex flex-col bg-cream font-sans text-mocha">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );
