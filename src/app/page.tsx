@@ -75,7 +75,7 @@ export default function Home() {
                 href="/contact"
                 className="bg-rose text-cream px-7 py-3 text-xs tracking-widest uppercase hover:bg-dusty-rose transition-colors"
               >
-                Order Now
+                Place an Inquiry
               </Link>
               <Link
                 href="/menu"
