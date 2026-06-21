@@ -36,9 +36,49 @@ const featuredItems = [
   },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "name": "Little Charlie's Bakeshop",
+  "description":
+    "Handcrafted baked goods made with love in Cortland, Ohio. Custom cakes, decorated cookies, sourdough bread, macarons, and seasonal treats.",
+  "url": "https://www.littlecharliesbakeshop.com",
+  "telephone": "+12342444104",
+  "image": "https://www.littlecharliesbakeshop.com/images/logo-stamp.png",
+  "logo": "https://www.littlecharliesbakeshop.com/images/logo-stamp.png",
+  "priceRange": "$10–$20",
+  "servesCuisine": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "251 S High St",
+    "addressLocality": "Cortland",
+    "addressRegion": "OH",
+    "postalCode": "44410",
+    "addressCountry": "US",
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "07:30",
+      "closes": "16:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00",
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero — split layout: left logo/text, right family photo */}
       <section className="relative bg-cream overflow-hidden">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 min-h-140">

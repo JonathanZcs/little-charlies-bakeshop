@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Little Charlie's Bakeshop",
     description: "Handcrafted baked goods made with love in Cortland, Ohio.",
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://littlecharliesbakeshop.com",
+    url: "https://www.littlecharliesbakeshop.com",
     siteName: "Little Charlie's Bakeshop",
     locale: "en_US",
     type: "website",
