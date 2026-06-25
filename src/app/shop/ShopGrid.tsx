@@ -3,7 +3,16 @@
 import { useState } from "react";
 import Image from "next/image";
 
-const products = [
+type ShopItemProp = {
+  name: string;
+  price: string;
+  category: string;
+  image_path?: string | null;
+  image?: string | null;
+  link: string;
+};
+
+const hardcodedProducts = [
   {
     name: "Mommy & Me Cinnamon Roll Class",
     price: "$60.00",
@@ -102,12 +111,10 @@ const products = [
   },
 ];
 
-const categories = [
-  "All",
-  ...Array.from(new Set(products.map((p) => p.category))),
-];
+export default function ShopGrid({ items }: { items?: ShopItemProp[] }) {
+  const products: ShopItemProp[] = items ?? hardcodedProducts;
+  const allCategories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
 
-export default function ShopGrid() {
   const [active, setActive] = useState("All");
 
   const filtered =
@@ -117,7 +124,7 @@ export default function ShopGrid() {
     <>
       {/* Category filter */}
       <div className="flex flex-wrap justify-center gap-3 mb-12">
-        {categories.map((cat) => (
+        {allCategories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActive(cat)}
@@ -134,25 +141,25 @@ export default function ShopGrid() {
 
       {/* Product grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((product) => (
+        {filtered.map((product) => {
+          const imgSrc = product.image_path ?? product.image ?? null;
+          return (
           <div
             key={product.name}
             className="bg-cream border border-parchment flex flex-col group hover:border-rose/50 hover:shadow-md transition-all"
           >
             {/* Image */}
             <div className="relative h-56 overflow-hidden bg-warm-white">
-              {product.image ? (
+              {imgSrc ? (
                 <Image
-                  src={product.image}
+                  src={imgSrc}
                   alt={product.name}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-5xl bg-blush">
-                  {product.emoji}
-                </div>
+                <div className="w-full h-full flex items-center justify-center bg-blush" />
               )}
               <div className="absolute top-3 left-3 bg-cream/90 px-2 py-0.5 text-xs tracking-widest uppercase text-rose border border-parchment">
                 {product.category}
@@ -177,7 +184,8 @@ export default function ShopGrid() {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );

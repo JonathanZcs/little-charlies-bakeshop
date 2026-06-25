@@ -1,6 +1,60 @@
 import { SquareClient, SquareEnvironment } from "square";
 import type { Order } from "./db";
 
+// ── Raw fetch helpers for the finances dashboard ──────────────────────────────
+
+const SQUARE_BASE = "https://connect.squareup.com/v2";
+
+function squareHeaders() {
+  return {
+    "Square-Version": "2024-02-22",
+    Authorization: `Bearer ${process.env.SQUARE_ACCESS_TOKEN}`,
+    "Content-Type": "application/json",
+  };
+}
+
+export function isSquareConfigured() {
+  return !!(process.env.SQUARE_ACCESS_TOKEN && process.env.SQUARE_LOCATION_ID);
+}
+
+export async function getLocationSummary() {
+  if (!isSquareConfigured()) return null;
+  const locationId = process.env.SQUARE_LOCATION_ID!;
+  const res = await fetch(`${SQUARE_BASE}/locations/${locationId}`, {
+    headers: squareHeaders(),
+    next: { revalidate: 300 },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return (data.location as Record<string, unknown>) ?? null;
+}
+
+export async function getSalesSummary(locationId: string) {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+  const body = {
+    location_ids: [locationId],
+    query: {
+      filter: {
+        date_time_filter: { created_at: { start_at: startOfMonth } },
+        state_filter: { states: ["COMPLETED"] },
+      },
+    },
+    limit: 500,
+  };
+
+  const res = await fetch(`${SQUARE_BASE}/orders/search`, {
+    method: "POST",
+    headers: squareHeaders(),
+    body: JSON.stringify(body),
+    next: { revalidate: 300 },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return (data.orders as Record<string, unknown>[]) ?? [];
+}
+
 const accessToken = process.env.SQUARE_ACCESS_TOKEN;
 const locationId  = process.env.SQUARE_LOCATION_ID;
 

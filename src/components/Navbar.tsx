@@ -7,7 +7,7 @@ import { useState } from "react";
 const links = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
-  // { href: "/shop", label: "Shop" }, // Phase 2 — Square shop not yet configured
+  { href: "/shop", label: "Shop" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/follow", label: "Follow" },

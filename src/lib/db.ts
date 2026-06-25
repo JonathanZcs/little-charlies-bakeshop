@@ -104,3 +104,332 @@ export async function updateOrderStatus(
   `;
   return (rows[0] as Order) ?? null;
 }
+
+// ── Menu ─────────────────────────────────────────────────────────────────────
+
+export type MenuCard = {
+  id: string;
+  section: string;
+  card_name: string;
+  images: string[];
+  note: string | null;
+  img_class: string | null;
+  sort_order: number;
+  visible: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type MenuItem = {
+  id: string;
+  card_id: string;
+  item_name: string;
+  description: string | null;
+  price: string | null;
+  sort_order: number;
+  visible: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function getMenuCards(): Promise<MenuCard[]> {
+  if (!sql) return [];
+  const rows = await sql`
+    SELECT * FROM menu_cards WHERE visible = true ORDER BY section, sort_order
+  `;
+  return rows as MenuCard[];
+}
+
+export async function getMenuCardsFull(): Promise<MenuCard[]> {
+  if (!sql) return [];
+  const rows = await sql`SELECT * FROM menu_cards ORDER BY section, sort_order`;
+  return rows as MenuCard[];
+}
+
+export async function getMenuItemsForCard(cardId: string): Promise<MenuItem[]> {
+  if (!sql) return [];
+  const rows = await sql`
+    SELECT * FROM menu_items WHERE card_id = ${cardId} ORDER BY sort_order
+  `;
+  return rows as MenuItem[];
+}
+
+export async function getMenuItemsFull(): Promise<MenuItem[]> {
+  if (!sql) return [];
+  const rows = await sql`SELECT * FROM menu_items ORDER BY sort_order`;
+  return rows as MenuItem[];
+}
+
+export async function upsertMenuCard(data: {
+  id?: string;
+  section: string;
+  card_name: string;
+  images?: string[];
+  note?: string | null;
+  img_class?: string | null;
+  sort_order?: number;
+  visible?: boolean;
+}): Promise<MenuCard | null> {
+  if (!sql) return null;
+  const now = new Date().toISOString();
+  if (data.id) {
+    const rows = await sql`
+      UPDATE menu_cards SET
+        section    = ${data.section},
+        card_name  = ${data.card_name},
+        images     = ${data.images ?? []}::text[],
+        note       = ${data.note ?? null},
+        img_class  = ${data.img_class ?? null},
+        sort_order = ${data.sort_order ?? 0},
+        visible    = ${data.visible ?? true},
+        updated_at = ${now}
+      WHERE id = ${data.id}
+      RETURNING *
+    `;
+    return (rows[0] as MenuCard) ?? null;
+  }
+  const rows = await sql`
+    INSERT INTO menu_cards (section, card_name, images, note, img_class, sort_order, visible, created_at, updated_at)
+    VALUES (${data.section}, ${data.card_name}, ${data.images ?? []}::text[], ${data.note ?? null},
+            ${data.img_class ?? null}, ${data.sort_order ?? 0}, ${data.visible ?? true}, ${now}, ${now})
+    RETURNING *
+  `;
+  return (rows[0] as MenuCard) ?? null;
+}
+
+export async function upsertMenuItem(data: {
+  id?: string;
+  card_id: string;
+  item_name: string;
+  description?: string | null;
+  price?: string | null;
+  sort_order?: number;
+  visible?: boolean;
+}): Promise<MenuItem | null> {
+  if (!sql) return null;
+  const now = new Date().toISOString();
+  if (data.id) {
+    const rows = await sql`
+      UPDATE menu_items SET
+        card_id     = ${data.card_id},
+        item_name   = ${data.item_name},
+        description = ${data.description ?? null},
+        price       = ${data.price ?? null},
+        sort_order  = ${data.sort_order ?? 0},
+        visible     = ${data.visible ?? true},
+        updated_at  = ${now}
+      WHERE id = ${data.id}
+      RETURNING *
+    `;
+    return (rows[0] as MenuItem) ?? null;
+  }
+  const rows = await sql`
+    INSERT INTO menu_items (card_id, item_name, description, price, sort_order, visible, created_at, updated_at)
+    VALUES (${data.card_id}, ${data.item_name}, ${data.description ?? null}, ${data.price ?? null},
+            ${data.sort_order ?? 0}, ${data.visible ?? true}, ${now}, ${now})
+    RETURNING *
+  `;
+  return (rows[0] as MenuItem) ?? null;
+}
+
+export async function deleteMenuItem(id: string): Promise<boolean> {
+  if (!sql) return false;
+  await sql`DELETE FROM menu_items WHERE id = ${id}`;
+  return true;
+}
+
+export async function deleteMenuCard(id: string): Promise<boolean> {
+  if (!sql) return false;
+  await sql`DELETE FROM menu_cards WHERE id = ${id}`;
+  return true;
+}
+
+// ── Shop Items ────────────────────────────────────────────────────────────────
+
+export type ShopItem = {
+  id: string;
+  name: string;
+  price: string;
+  category: string;
+  image_path: string | null;
+  link: string;
+  visible: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function getShopItems(): Promise<ShopItem[]> {
+  if (!sql) return [];
+  const rows = await sql`SELECT * FROM shop_items WHERE visible = true ORDER BY sort_order`;
+  return rows as ShopItem[];
+}
+
+export async function getShopItemsFull(): Promise<ShopItem[]> {
+  if (!sql) return [];
+  const rows = await sql`SELECT * FROM shop_items ORDER BY sort_order`;
+  return rows as ShopItem[];
+}
+
+export async function upsertShopItem(data: {
+  id?: string;
+  name: string;
+  price: string;
+  category: string;
+  image_path?: string | null;
+  link: string;
+  visible?: boolean;
+  sort_order?: number;
+}): Promise<ShopItem | null> {
+  if (!sql) return null;
+  const now = new Date().toISOString();
+  if (data.id) {
+    const rows = await sql`
+      UPDATE shop_items SET
+        name       = ${data.name},
+        price      = ${data.price},
+        category   = ${data.category},
+        image_path = ${data.image_path ?? null},
+        link       = ${data.link},
+        visible    = ${data.visible ?? true},
+        sort_order = ${data.sort_order ?? 0},
+        updated_at = ${now}
+      WHERE id = ${data.id}
+      RETURNING *
+    `;
+    return (rows[0] as ShopItem) ?? null;
+  }
+  const rows = await sql`
+    INSERT INTO shop_items (name, price, category, image_path, link, visible, sort_order, created_at, updated_at)
+    VALUES (${data.name}, ${data.price}, ${data.category}, ${data.image_path ?? null},
+            ${data.link}, ${data.visible ?? true}, ${data.sort_order ?? 0}, ${now}, ${now})
+    RETURNING *
+  `;
+  return (rows[0] as ShopItem) ?? null;
+}
+
+export async function deleteShopItem(id: string): Promise<boolean> {
+  if (!sql) return false;
+  await sql`DELETE FROM shop_items WHERE id = ${id}`;
+  return true;
+}
+
+// ── Recipes ───────────────────────────────────────────────────────────────────
+
+export type Recipe = {
+  id: string;
+  name: string;
+  description: string | null;
+  sale_price_cents: number;
+  yield_count: number;
+  yield_unit: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RecipeIngredient = {
+  id: string;
+  recipe_id: string;
+  ingredient_name: string;
+  quantity: number;
+  unit: string;
+  cost_per_unit_cents: number;
+  sort_order: number;
+  created_at: string;
+};
+
+export type RecipeWithIngredients = Recipe & { ingredients: RecipeIngredient[] };
+
+export async function getRecipes(): Promise<Recipe[]> {
+  if (!sql) return [];
+  const rows = await sql`SELECT * FROM recipes ORDER BY name`;
+  return rows as Recipe[];
+}
+
+export async function getRecipe(id: string): Promise<RecipeWithIngredients | null> {
+  if (!sql) return null;
+  const recipes = await sql`SELECT * FROM recipes WHERE id = ${id}`;
+  if (!recipes[0]) return null;
+  const ingredients = await sql`
+    SELECT * FROM recipe_ingredients WHERE recipe_id = ${id} ORDER BY sort_order
+  `;
+  return { ...(recipes[0] as Recipe), ingredients: ingredients as RecipeIngredient[] };
+}
+
+export async function upsertRecipe(data: {
+  id?: string;
+  name: string;
+  description?: string | null;
+  sale_price_cents: number;
+  yield_count: number;
+  yield_unit: string;
+}): Promise<Recipe | null> {
+  if (!sql) return null;
+  const now = new Date().toISOString();
+  if (data.id) {
+    const rows = await sql`
+      UPDATE recipes SET
+        name             = ${data.name},
+        description      = ${data.description ?? null},
+        sale_price_cents = ${data.sale_price_cents},
+        yield_count      = ${data.yield_count},
+        yield_unit       = ${data.yield_unit},
+        updated_at       = ${now}
+      WHERE id = ${data.id}
+      RETURNING *
+    `;
+    return (rows[0] as Recipe) ?? null;
+  }
+  const rows = await sql`
+    INSERT INTO recipes (name, description, sale_price_cents, yield_count, yield_unit, created_at, updated_at)
+    VALUES (${data.name}, ${data.description ?? null}, ${data.sale_price_cents},
+            ${data.yield_count}, ${data.yield_unit}, ${now}, ${now})
+    RETURNING *
+  `;
+  return (rows[0] as Recipe) ?? null;
+}
+
+export async function upsertRecipeIngredient(data: {
+  id?: string;
+  recipe_id: string;
+  ingredient_name: string;
+  quantity: number;
+  unit: string;
+  cost_per_unit_cents: number;
+  sort_order?: number;
+}): Promise<RecipeIngredient | null> {
+  if (!sql) return null;
+  const now = new Date().toISOString();
+  if (data.id) {
+    const rows = await sql`
+      UPDATE recipe_ingredients SET
+        ingredient_name   = ${data.ingredient_name},
+        quantity          = ${data.quantity},
+        unit              = ${data.unit},
+        cost_per_unit_cents = ${data.cost_per_unit_cents},
+        sort_order        = ${data.sort_order ?? 0}
+      WHERE id = ${data.id}
+      RETURNING *
+    `;
+    return (rows[0] as RecipeIngredient) ?? null;
+  }
+  const rows = await sql`
+    INSERT INTO recipe_ingredients (recipe_id, ingredient_name, quantity, unit, cost_per_unit_cents, sort_order, created_at)
+    VALUES (${data.recipe_id}, ${data.ingredient_name}, ${data.quantity}, ${data.unit},
+            ${data.cost_per_unit_cents}, ${data.sort_order ?? 0}, ${now})
+    RETURNING *
+  `;
+  return (rows[0] as RecipeIngredient) ?? null;
+}
+
+export async function deleteRecipe(id: string): Promise<boolean> {
+  if (!sql) return false;
+  await sql`DELETE FROM recipes WHERE id = ${id}`;
+  return true;
+}
+
+export async function deleteRecipeIngredient(id: string): Promise<boolean> {
+  if (!sql) return false;
+  await sql`DELETE FROM recipe_ingredients WHERE id = ${id}`;
+  return true;
+}

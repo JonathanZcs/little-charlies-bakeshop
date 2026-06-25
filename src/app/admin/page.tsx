@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
+import AdminNav from "./AdminNav";
 
 export const metadata = { title: "Admin — Orders" };
 export const dynamic = "force-dynamic";
@@ -129,7 +130,7 @@ export default async function AdminPage({
   return (
     <div className="min-h-screen bg-warm-white">
       {/* Header */}
-      <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between">
+      <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
           <span className="font-script text-2xl text-rose">little charlie&apos;s</span>
           <span className="text-xs tracking-[0.25em] uppercase text-brown ml-3">Order Inquiries</span>
@@ -145,6 +146,8 @@ export default async function AdminPage({
           </form>
         </div>
       </header>
+
+      <AdminNav active="Orders" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Tabs + Sort */}
