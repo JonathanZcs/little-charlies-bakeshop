@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
+import AdminNav from "./AdminNav";
 
 export const metadata = { title: "Admin — Orders" };
 export const dynamic = "force-dynamic";
@@ -142,7 +143,7 @@ export default async function AdminPage({
   return (
     <div className="min-h-screen bg-warm-white">
       {/* Header */}
-      <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between">
+      <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
           <span className="font-script text-2xl text-rose">little charlie&apos;s</span>
           <span className="text-xs tracking-[0.25em] uppercase text-brown ml-3">Order Inquiries</span>
@@ -158,6 +159,8 @@ export default async function AdminPage({
           </form>
         </div>
       </header>
+
+      <AdminNav active="Orders" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Tabs + Sort */}
@@ -241,6 +244,18 @@ export default async function AdminPage({
       </div>
     </div>
   );
+}
+
+function getPickupUrgency(eventDate: string | null): { label: string; classes: string } | null {
+  if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) return null;
+  const pickup = new Date(eventDate + "T12:00:00Z");
+  const today  = new Date(todayET() + "T12:00:00Z");
+  const diffDays = Math.round((pickup.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0)  return null;
+  if (diffDays === 0) return { label: "TODAY",              classes: "bg-red-100 text-red-700 border border-red-200" };
+  if (diffDays === 1) return { label: "TOMORROW",           classes: "bg-amber-100 text-amber-700 border border-amber-200" };
+  if (diffDays <= 3)  return { label: `IN ${diffDays} DAYS`, classes: "bg-amber-50 text-amber-600 border border-amber-200" };
+  return { label: `IN ${diffDays} DAYS`, classes: "bg-parchment text-brown/60 border border-parchment" };
 }
 
 function OrderCard({ order }: { order: Order }) {

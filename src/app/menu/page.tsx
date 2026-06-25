@@ -22,14 +22,8 @@ type MenuCard = {
 const drinksCards: MenuCard[] = [
   {
     name: "Lattes",
-    imgClass: "object-top",
-    images: [
-      "/images/latte.jpg",
-      "/images/coffee-1.jpg",
-      "/images/coffee-2.jpg",
-      "/images/coffee-4.jpg",
-      "/images/coffee-6.jpg",
-    ],
+    imgClass: "[object-position:center_25%]",
+    images: ["/images/coffee-1.jpg"],
     items: [
       { name: "White Chocolate Caramel" },
       { name: "Cinnamon Roll" },
@@ -41,8 +35,8 @@ const drinksCards: MenuCard[] = [
   },
   {
     name: "Specialty Drinks",
-    imgClass: "object-top",
-    images: ["/images/matcha.jpg", "/images/coffee-6.jpg"],
+    imgClass: "[object-position:center_15%]",
+    images: ["/images/matcha.jpg"],
     items: [
       {
         name: "Dirty Coconut",
@@ -58,6 +52,7 @@ const drinksCards: MenuCard[] = [
 const breakfastCards: MenuCard[] = [
   {
     name: "Warm Breakfast",
+    imgClass: "[object-position:center_75%]",
     images: [
       "/images/avocado-toast.jpg",
       "/images/breakfast-focaccia.jpg",
@@ -79,6 +74,7 @@ const breakfastCards: MenuCard[] = [
   },
   {
     name: "Sourdough Bagels",
+    imgClass: "[object-position:center_75%]",
     images: [
       "/images/bagels-1.jpg",
       "/images/bagels-2.jpg",
@@ -157,7 +153,7 @@ const bakeryCards: MenuCard[] = [
     images: ["/images/menu-macarons.jpg", "/images/macarons.jpg"],
     items: [
       { name: "6-Pack", price: "$18" },
-      { name: "1 Dozen", price: "$34" },
+      { name: "1 Dozen", price: "$36" },
     ],
     note: "Seasonal flavors. Pre-order recommended.",
   },
@@ -200,6 +196,7 @@ function MenuCardGrid({ cards }: { cards: MenuCard[] }) {
                 images={card.images}
                 alt={card.name}
                 sizes="(max-width: 640px) 100vw, 50vw"
+                imgClass={card.imgClass}
               />
             ) : (
               <Image

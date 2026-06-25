@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Lato, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import SiteShell from "@/components/SiteShell";
+import { Analytics } from "@vercel/analytics/next";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Little Charlie's Bakeshop",
     description: "Handcrafted baked goods made with love in Cortland, Ohio.",
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://littlecharliesbakeshop.com",
+    url: "https://www.littlecharliesbakeshop.com",
     siteName: "Little Charlie's Bakeshop",
     locale: "en_US",
     type: "website",
@@ -63,6 +64,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${lato.variable} ${dancing.variable}`}>
       <body className="min-h-screen flex flex-col bg-cream font-sans text-mocha">
         <SiteShell>{children}</SiteShell>
+        <Analytics />
       </body>
     </html>
   );

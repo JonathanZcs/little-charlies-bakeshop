@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const inquiry   = formData.get("inquiry") as string | null;
     const photos    = formData.getAll("photos") as File[];
 
-    if (!name?.trim() || !phone?.trim() || !email?.trim() || !orderType?.trim() || !inquiry?.trim()) {
+    if (!name?.trim() || !phone?.trim() || !email?.trim() || !orderType?.trim() || !inquiry?.trim() || !eventDate?.trim()) {
       return NextResponse.json({ error: "Required fields are missing" }, { status: 400 });
     }
 
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     // 2. Send notification email to Alexis (skip gracefully if API key not configured)
     if (process.env.RESEND_API_KEY) {
       await getResend().emails.send({
-        from: "Order Inquiry - Little Charlie's <onboarding@resend.dev>",
+        from: "Order Inquiry - Little Charlie's <orders@littlecharliesbakeshop.com>",
         to: process.env.VERCEL_ENV === "production" ? "littlecharliesbakeshop@hotmail.com" : "jonz0917@yahoo.com",
         replyTo: email as string,
         subject: `Order Inquiry — ${name} (${orderType})`,

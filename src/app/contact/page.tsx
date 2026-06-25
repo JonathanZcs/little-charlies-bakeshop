@@ -66,11 +66,12 @@ export default function ContactPage() {
               <h3 className="font-serif text-xs uppercase tracking-widest text-rose mb-3">
                 Hours
               </h3>
-              <p className="text-brown text-sm leading-7">
-                Tue &ndash; Sat: 9AM &ndash; 4PM
-                <br />
-                Sun &ndash; Mon: Closed
-              </p>
+              <div className="text-brown text-sm leading-7 space-y-1">
+                <p>Tue &ndash; Fri: 7:30AM &ndash; 4PM</p>
+                <p className="pl-3 text-brown/50 text-xs">drive-thru from 7:30 + storefront from 9</p>
+                <p>Sat: 9AM &ndash; 2PM</p>
+                <p>Sun &ndash; Mon: Closed</p>
+              </div>
             </div>
           </div>
 
