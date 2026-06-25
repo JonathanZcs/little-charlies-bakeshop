@@ -30,6 +30,19 @@ function isPast(eventDate: string | null): boolean {
   return eventDate < todayET();
 }
 
+function getPickupUrgency(eventDate: string | null): { label: string; classes: string } | null {
+  if (!eventDate || !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) return null;
+  const today = todayET();
+  const diffDays = Math.round(
+    (new Date(eventDate + "T12:00:00Z").getTime() - new Date(today + "T12:00:00Z").getTime()) / 86400000
+  );
+  if (diffDays < 0) return null;
+  if (diffDays === 0) return { label: "TODAY", classes: "bg-red-100 text-red-700" };
+  if (diffDays === 1) return { label: "TOMORROW", classes: "bg-amber-100 text-amber-700" };
+  if (diffDays <= 3) return { label: `${diffDays} DAYS`, classes: "bg-amber-50 text-amber-600" };
+  return null;
+}
+
 type DateGroup = {
   dateKey: string | null;
   label: string;
@@ -135,9 +148,9 @@ export default async function AdminPage({
           <span className="text-xs tracking-[0.25em] uppercase text-brown ml-3">Order Inquiries</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/" className="text-xs text-brown/60 hover:text-rose tracking-widest uppercase">
+          <a href="https://www.littlecharliesbakeshop.com" className="text-xs text-brown/60 hover:text-rose tracking-widest uppercase">
             ← Site
-          </Link>
+          </a>
           <form action={logout}>
             <button type="submit" className="text-xs text-brown/60 hover:text-rose tracking-widest uppercase cursor-pointer">
               Sign Out
