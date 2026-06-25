@@ -126,6 +126,7 @@ export type MenuItem = {
   item_name: string;
   description: string | null;
   price: string | null;
+  image_path: string | null;
   sort_order: number;
   visible: boolean;
   created_at: string;
@@ -207,6 +208,7 @@ export async function upsertMenuItem(data: {
   item_name: string;
   description?: string | null;
   price?: string | null;
+  image_path?: string | null;
   sort_order?: number;
   visible?: boolean;
 }): Promise<MenuItem | null> {
@@ -219,6 +221,7 @@ export async function upsertMenuItem(data: {
         item_name   = ${data.item_name},
         description = ${data.description ?? null},
         price       = ${data.price ?? null},
+        image_path  = ${data.image_path ?? null},
         sort_order  = ${data.sort_order ?? 0},
         visible     = ${data.visible ?? true},
         updated_at  = ${now}
@@ -228,9 +231,9 @@ export async function upsertMenuItem(data: {
     return (rows[0] as MenuItem) ?? null;
   }
   const rows = await sql`
-    INSERT INTO menu_items (card_id, item_name, description, price, sort_order, visible, created_at, updated_at)
+    INSERT INTO menu_items (card_id, item_name, description, price, image_path, sort_order, visible, created_at, updated_at)
     VALUES (${data.card_id}, ${data.item_name}, ${data.description ?? null}, ${data.price ?? null},
-            ${data.sort_order ?? 0}, ${data.visible ?? true}, ${now}, ${now})
+            ${data.image_path ?? null}, ${data.sort_order ?? 0}, ${data.visible ?? true}, ${now}, ${now})
     RETURNING *
   `;
   return (rows[0] as MenuItem) ?? null;

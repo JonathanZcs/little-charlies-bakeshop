@@ -52,12 +52,27 @@ export default async function AdminMenuPage() {
   async function saveItem(formData: FormData) {
     "use server";
     const id = formData.get("id") as string | null;
+    const imageFile = formData.get("image_file") as File | null;
+    let imagePath = (formData.get("image_path") as string) || null;
+
+    if (imageFile && imageFile.size > 0) {
+      try {
+        const { put } = await import("@vercel/blob");
+        const ext = imageFile.name.split(".").pop() ?? "jpg";
+        const blob = await put(`menu/${Date.now()}.${ext}`, imageFile, { access: "public" });
+        imagePath = blob.url;
+      } catch {
+        // BLOB_READ_WRITE_TOKEN not set — fall back to URL field value
+      }
+    }
+
     await upsertMenuItem({
       id: id || undefined,
       card_id: formData.get("card_id") as string,
       item_name: formData.get("item_name") as string,
       description: (formData.get("description") as string) || null,
       price: (formData.get("price") as string) || null,
+      image_path: imagePath,
       visible: formData.get("visible") === "true",
       sort_order: Number(formData.get("sort_order") ?? 0),
     });

@@ -74,9 +74,10 @@ function groupByPickupDate(orders: Order[], ascending: boolean): DateGroup[] {
       return { dateKey: key, label: "Tomorrow", sublabel: dateStr, headerClasses: "bg-amber-50 border-amber-200 text-amber-700", countClasses: "bg-amber-100 text-amber-600", orders: map.get(key)! };
     }
     if (diffDays > 0 && diffDays <= 7) {
-      return { dateKey: key, label: dateStr, sublabel: `in ${diffDays} days`, headerClasses: "bg-parchment border-parchment text-brown", countClasses: "bg-warm-white text-brown/60", orders: map.get(key)! };
+      return { dateKey: key, label: dateStr, sublabel: `in ${diffDays} day${diffDays === 1 ? "" : "s"}`, headerClasses: "bg-parchment border-parchment text-brown", countClasses: "bg-warm-white text-brown/60", orders: map.get(key)! };
     }
-    return { dateKey: key, label: dateStr, sublabel: diffDays < 0 ? `${Math.abs(diffDays)} days ago` : `in ${diffDays} days`, headerClasses: "bg-parchment border-parchment text-brown", countClasses: "bg-warm-white text-brown/60", orders: map.get(key)! };
+    const abs = Math.abs(diffDays);
+    return { dateKey: key, label: dateStr, sublabel: diffDays < 0 ? `${abs} day${abs === 1 ? "" : "s"} ago` : `in ${diffDays} day${diffDays === 1 ? "" : "s"}`, headerClasses: "bg-parchment border-parchment text-brown", countClasses: "bg-warm-white text-brown/60", orders: map.get(key)! };
   });
 
   if (noDate.length > 0) {

@@ -22,7 +22,8 @@ export function proxy(request: NextRequest) {
   const isPreview =
     host.endsWith(".vercel.app") ||
     host.startsWith("localhost") ||
-    host.startsWith("127.0.0.1");
+    host.startsWith("127.0.0.1") ||
+    host.startsWith("[::1]");
 
   // Main domain: redirect /admin/* → admin subdomain (skip on preview)
   if (!isAdminSubdomain && !isPreview && pathname.startsWith("/admin")) {
