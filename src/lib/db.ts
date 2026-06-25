@@ -142,22 +142,26 @@ export async function getMenuCards(): Promise<MenuCard[]> {
 
 export async function getMenuCardsFull(): Promise<MenuCard[]> {
   if (!sql) return [];
-  const rows = await sql`SELECT * FROM menu_cards ORDER BY section, sort_order`;
-  return rows as MenuCard[];
+  try {
+    const rows = await sql`SELECT * FROM menu_cards ORDER BY section, sort_order`;
+    return rows as MenuCard[];
+  } catch { return []; }
 }
 
 export async function getMenuItemsForCard(cardId: string): Promise<MenuItem[]> {
   if (!sql) return [];
-  const rows = await sql`
-    SELECT * FROM menu_items WHERE card_id = ${cardId} ORDER BY sort_order
-  `;
-  return rows as MenuItem[];
+  try {
+    const rows = await sql`SELECT * FROM menu_items WHERE card_id = ${cardId} ORDER BY sort_order`;
+    return rows as MenuItem[];
+  } catch { return []; }
 }
 
 export async function getMenuItemsFull(): Promise<MenuItem[]> {
   if (!sql) return [];
-  const rows = await sql`SELECT * FROM menu_items ORDER BY sort_order`;
-  return rows as MenuItem[];
+  try {
+    const rows = await sql`SELECT * FROM menu_items ORDER BY sort_order`;
+    return rows as MenuItem[];
+  } catch { return []; }
 }
 
 export async function upsertMenuCard(data: {
@@ -261,14 +265,18 @@ export type ShopItem = {
 
 export async function getShopItems(): Promise<ShopItem[]> {
   if (!sql) return [];
-  const rows = await sql`SELECT * FROM shop_items WHERE visible = true ORDER BY sort_order`;
-  return rows as ShopItem[];
+  try {
+    const rows = await sql`SELECT * FROM shop_items WHERE visible = true ORDER BY sort_order`;
+    return rows as ShopItem[];
+  } catch { return []; }
 }
 
 export async function getShopItemsFull(): Promise<ShopItem[]> {
   if (!sql) return [];
-  const rows = await sql`SELECT * FROM shop_items ORDER BY sort_order`;
-  return rows as ShopItem[];
+  try {
+    const rows = await sql`SELECT * FROM shop_items ORDER BY sort_order`;
+    return rows as ShopItem[];
+  } catch { return []; }
 }
 
 export async function upsertShopItem(data: {
@@ -342,18 +350,22 @@ export type RecipeWithIngredients = Recipe & { ingredients: RecipeIngredient[] }
 
 export async function getRecipes(): Promise<Recipe[]> {
   if (!sql) return [];
-  const rows = await sql`SELECT * FROM recipes ORDER BY name`;
-  return rows as Recipe[];
+  try {
+    const rows = await sql`SELECT * FROM recipes ORDER BY name`;
+    return rows as Recipe[];
+  } catch { return []; }
 }
 
 export async function getRecipe(id: string): Promise<RecipeWithIngredients | null> {
   if (!sql) return null;
-  const recipes = await sql`SELECT * FROM recipes WHERE id = ${id}`;
-  if (!recipes[0]) return null;
-  const ingredients = await sql`
-    SELECT * FROM recipe_ingredients WHERE recipe_id = ${id} ORDER BY sort_order
-  `;
-  return { ...(recipes[0] as Recipe), ingredients: ingredients as RecipeIngredient[] };
+  try {
+    const recipes = await sql`SELECT * FROM recipes WHERE id = ${id}`;
+    if (!recipes[0]) return null;
+    const ingredients = await sql`
+      SELECT * FROM recipe_ingredients WHERE recipe_id = ${id} ORDER BY sort_order
+    `;
+    return { ...(recipes[0] as Recipe), ingredients: ingredients as RecipeIngredient[] };
+  } catch { return null; }
 }
 
 export async function upsertRecipe(data: {
