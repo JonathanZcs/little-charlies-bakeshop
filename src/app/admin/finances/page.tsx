@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
 import { isSquareConfigured, getLocationSummary, getSalesSummary } from "@/lib/square";
 import AdminNav from "../AdminNav";
+import AdminPageHeader from "../AdminPageHeader";
 
 export const metadata = { title: "Admin — Finances" };
 export const dynamic = "force-dynamic";
@@ -45,7 +46,7 @@ export default async function AdminFinancesPage() {
   const avgCents = orderCount > 0 ? Math.round(totalCents / orderCount) : 0;
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="admin-shell min-h-screen bg-warm-white">
       <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
           <span className="font-script text-2xl text-rose">little charlie&apos;s</span>
@@ -56,12 +57,14 @@ export default async function AdminFinancesPage() {
       <AdminNav active="Finances" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h1 className="font-serif text-3xl text-mocha">Financial Overview</h1>
-          {locationName && (
-            <p className="text-brown/50 text-sm mt-1">{locationName}</p>
-          )}
-        </div>
+        <AdminPageHeader
+          title="Financial Overview"
+          subtitle={
+            configured
+              ? locationName ?? "Sales summary from Square."
+              : "Connect Square to see your sales."
+          }
+        />
 
         {!configured ? (
           /* Setup card */

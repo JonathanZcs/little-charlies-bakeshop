@@ -73,7 +73,7 @@ function ItemRow({
     >
       <input type="hidden" name="id" value={item.id} />
       <input type="hidden" name="card_id" value={item.card_id} />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Name</label>
           <input
@@ -162,7 +162,7 @@ function AddItemForm({
       className="bg-warm-white border border-parchment/60 p-4 mt-3 space-y-3"
     >
       <input type="hidden" name="card_id" value={cardId} />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Name *</label>
           <input
@@ -239,7 +239,7 @@ function CardBlock({
         >
           <input type="hidden" name="id" value={card.id} />
           <input type="hidden" name="section" value={card.section} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Card Name</label>
               <input
@@ -420,7 +420,7 @@ export default function MenuSection({ section, cards, itemsByCard, saveCard, sav
       ))}
 
       {cards.length === 0 && !addingCard && (
-        <p className="text-sm text-brown/30 italic py-4">No cards yet. Add one above.</p>
+        <p className="text-sm text-brown/30 italic py-4">No cards yet — use “+ Add Card” to create one.</p>
       )}
 
       {addingCard && (

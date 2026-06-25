@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
 import AdminNav from "./AdminNav";
+import AdminPageHeader from "./AdminPageHeader";
 
 export const metadata = { title: "Admin — Orders" };
 export const dynamic = "force-dynamic";
@@ -128,7 +129,7 @@ export default async function AdminPage({
       : null;
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="admin-shell min-h-screen bg-warm-white">
       {/* Header */}
       <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
@@ -150,6 +151,11 @@ export default async function AdminPage({
       <AdminNav active="Orders" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
+        <AdminPageHeader
+          title="Order Inquiries"
+          subtitle="Custom cake and order requests from your website."
+        />
+
         {/* Tabs + Sort */}
         <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
           <div className="flex gap-2">
@@ -192,8 +198,15 @@ export default async function AdminPage({
         </div>
 
         {ordersForTab.length === 0 ? (
-          <div className="text-center py-20 text-brown/40">
-            <p className="text-lg font-light">No {activeTab === "past" ? "past inquiries" : "upcoming inquiries"}.</p>
+          <div className="text-center py-20 border border-dashed border-parchment bg-cream/40">
+            <p className="text-lg font-light text-brown/50">
+              No {activeTab === "past" ? "past inquiries" : "upcoming inquiries"} yet.
+            </p>
+            <p className="text-sm text-brown/35 mt-1">
+              {activeTab === "past"
+                ? "Completed and past-date requests will land here."
+                : "New order requests from your website will appear here."}
+            </p>
           </div>
         ) : sortMode === "newest" || !groups ? (
           /* Flat list — newest received first */

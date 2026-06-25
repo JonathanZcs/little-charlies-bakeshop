@@ -35,7 +35,7 @@ export default async function AdminLoginPage({
   }
 
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+    <div className="admin-shell min-h-screen bg-cream flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <p className="font-script text-4xl text-rose mb-1">little charlie&apos;s</p>

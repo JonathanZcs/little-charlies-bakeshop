@@ -49,3 +49,33 @@ body {
 .animate-marquee-reverse:hover {
   animation-play-state: paused;
 }
+
+/* ── Admin dashboard ──────────────────────────────────────────────────── */
+
+/* High-contrast form fields. The form cards sit on tan parchment, and the
+   inputs were pale-tan-on-pale-tan — barely visible. A near-white fill makes
+   every field read clearly as an editable box, regardless of which card
+   shade it sits on. Authoritative here so individual inputs don't each need
+   to manage their own bg/contrast. */
+.admin-shell input:not([type="checkbox"]):not([type="radio"]),
+.admin-shell textarea,
+.admin-shell select {
+  background-color: #fffdf8;
+}
+
+.admin-shell input:not([type="checkbox"]):not([type="radio"]):focus,
+.admin-shell textarea:focus,
+.admin-shell select:focus {
+  border-color: var(--color-rose);
+  box-shadow: 0 0 0 3px rgb(90 122 74 / 0.14);
+}
+
+/* Keep horizontal scroll areas (e.g. the admin nav on mobile) scrollable
+   without a visible scrollbar. */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -4,6 +4,7 @@ import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
 import { getRecipes, getRecipe, upsertRecipe, upsertRecipeIngredient, deleteRecipe } from "@/lib/db";
 import type { RecipeWithIngredients } from "@/lib/db";
 import AdminNav from "../AdminNav";
+import AdminPageHeader from "../AdminPageHeader";
 import RecipeList from "./RecipeList";
 
 export const metadata = { title: "Admin — Recipes" };
@@ -70,7 +71,7 @@ export default async function AdminRecipesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="admin-shell min-h-screen bg-warm-white">
       <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
           <span className="font-script text-2xl text-rose">little charlie&apos;s</span>
@@ -81,10 +82,10 @@ export default async function AdminRecipesPage() {
       <AdminNav active="Recipes" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h1 className="font-serif text-3xl text-mocha">Recipe Cost Calculator</h1>
-          <p className="text-brown/60 mt-1 font-light">Know your margins. Price with confidence.</p>
-        </div>
+        <AdminPageHeader
+          title="Recipe Cost Calculator"
+          subtitle="Know your margins. Price with confidence."
+        />
 
         <RecipeList
           recipes={recipesWithIngredients}

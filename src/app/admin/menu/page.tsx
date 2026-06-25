@@ -11,6 +11,7 @@ import {
 } from "@/lib/db";
 import type { MenuCard, MenuItem } from "@/lib/db";
 import AdminNav from "../AdminNav";
+import AdminPageHeader, { LiveDot } from "../AdminPageHeader";
 import MenuSection from "./MenuSection";
 
 export const metadata = { title: "Admin — Menu Management" };
@@ -76,7 +77,7 @@ export default async function AdminMenuPage() {
   }
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="admin-shell min-h-screen bg-warm-white">
       <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
           <span className="font-script text-2xl text-rose">little charlie&apos;s</span>
@@ -87,10 +88,17 @@ export default async function AdminMenuPage() {
       <AdminNav active="Menu" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <div className="flex items-center gap-2 mb-8 text-xs text-brown/40 tracking-wide">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
-          {cards.length} card{cards.length !== 1 ? "s" : ""} · {items.length} item{items.length !== 1 ? "s" : ""} · changes are live immediately
-        </div>
+        <AdminPageHeader
+          title="Menu"
+          subtitle="What appears on your public menu page."
+          meta={
+            <>
+              <LiveDot />
+              {cards.length} card{cards.length !== 1 ? "s" : ""} · {items.length} item
+              {items.length !== 1 ? "s" : ""} · changes are live immediately
+            </>
+          }
+        />
 
         {sections.map((section) => (
           <MenuSection

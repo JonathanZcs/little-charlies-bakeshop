@@ -143,8 +143,8 @@ function IngredientRow({
   onRemove: (i: number) => void;
 }) {
   return (
-    <div className="grid grid-cols-12 gap-2 items-end">
-      <div className="col-span-4">
+    <div className="grid grid-cols-2 sm:grid-cols-12 gap-2 items-end">
+      <div className="col-span-2 sm:col-span-4">
         {index === 0 && (
           <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Ingredient</label>
         )}
@@ -155,9 +155,10 @@ function IngredientRow({
           className="w-full border border-parchment bg-cream px-3 py-2 text-sm text-brown focus:outline-none focus:border-rose"
         />
       </div>
-      <div className="col-span-2">
+      <div className="col-span-1 sm:col-span-2">
+        <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1 sm:hidden">Qty</label>
         {index === 0 && (
-          <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Qty</label>
+          <label className="text-[10px] uppercase tracking-widest text-brown/50 hidden sm:block mb-1">Qty</label>
         )}
         <input
           type="number"
@@ -168,9 +169,10 @@ function IngredientRow({
           className="w-full border border-parchment bg-cream px-3 py-2 text-sm text-brown focus:outline-none focus:border-rose"
         />
       </div>
-      <div className="col-span-2">
+      <div className="col-span-1 sm:col-span-2">
+        <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1 sm:hidden">Unit</label>
         {index === 0 && (
-          <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Unit</label>
+          <label className="text-[10px] uppercase tracking-widest text-brown/50 hidden sm:block mb-1">Unit</label>
         )}
         <input
           value={ingredient.unit}
@@ -179,9 +181,10 @@ function IngredientRow({
           className="w-full border border-parchment bg-cream px-3 py-2 text-sm text-brown focus:outline-none focus:border-rose"
         />
       </div>
-      <div className="col-span-3">
+      <div className="col-span-2 sm:col-span-3">
+        <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1 sm:hidden">Cost / unit ($)</label>
         {index === 0 && (
-          <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Cost / unit ($)</label>
+          <label className="text-[10px] uppercase tracking-widest text-brown/50 hidden sm:block mb-1">Cost / unit ($)</label>
         )}
         <input
           type="number"
@@ -192,7 +195,7 @@ function IngredientRow({
           className="w-full border border-parchment bg-cream px-3 py-2 text-sm text-brown focus:outline-none focus:border-rose"
         />
       </div>
-      <div className="col-span-1 flex justify-end pb-0">
+      <div className="col-span-2 sm:col-span-1 flex justify-end pb-0">
         <button
           type="button"
           onClick={() => onRemove(index)}
@@ -247,7 +250,7 @@ function AddRecipeForm({ saveRecipe, onClose }: { saveRecipe: (fd: FormData) => 
     >
       <h3 className="font-serif text-mocha text-xl">New Recipe</h3>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Recipe Name *</label>
           <input
@@ -279,7 +282,7 @@ function AddRecipeForm({ saveRecipe, onClose }: { saveRecipe: (fd: FormData) => 
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Yield Count *</label>
           <input

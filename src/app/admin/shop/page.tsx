@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { isValidSession, ADMIN_COOKIE } from "@/lib/admin-session";
 import { getShopItemsFull, upsertShopItem, deleteShopItem } from "@/lib/db";
-import type { ShopItem } from "@/lib/db";
 import AdminNav from "../AdminNav";
+import AdminPageHeader, { LiveDot } from "../AdminPageHeader";
 import ShopAdminClient from "./ShopAdminClient";
 
 export const metadata = { title: "Admin — Shop Items" };
@@ -40,7 +40,7 @@ export default async function AdminShopPage() {
   }
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="admin-shell min-h-screen bg-warm-white">
       <header className="bg-cream border-b border-parchment px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
           <span className="font-script text-2xl text-rose">little charlie&apos;s</span>
@@ -51,10 +51,16 @@ export default async function AdminShopPage() {
       <AdminNav active="Shop" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <div className="flex items-center gap-2 mb-8 text-xs text-brown/40 tracking-wide">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
-          {items.length} item{items.length !== 1 ? "s" : ""} · changes are live immediately
-        </div>
+        <AdminPageHeader
+          title="Shop"
+          subtitle="Products for sale on your website."
+          meta={
+            <>
+              <LiveDot />
+              changes are live immediately
+            </>
+          }
+        />
 
         <ShopAdminClient items={items} saveItem={saveItem} removeItem={removeItem} />
       </div>

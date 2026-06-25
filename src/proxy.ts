@@ -17,8 +17,12 @@ export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   const isAdminSubdomain = host === ADMIN_SUBDOMAIN || host.startsWith("admin.");
-  // Vercel preview URLs (.vercel.app) serve /admin/* directly — no subdomain redirect
-  const isPreview = host.endsWith(".vercel.app") || host === "localhost:3000";
+  // Vercel preview URLs (.vercel.app) and any local dev host serve /admin/* directly —
+  // no subdomain redirect. Match localhost/127.0.0.1 on any port (dev servers shift ports).
+  const isPreview =
+    host.endsWith(".vercel.app") ||
+    host.startsWith("localhost") ||
+    host.startsWith("127.0.0.1");
 
   // Main domain: redirect /admin/* → admin subdomain (skip on preview)
   if (!isAdminSubdomain && !isPreview && pathname.startsWith("/admin")) {

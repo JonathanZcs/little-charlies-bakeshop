@@ -27,7 +27,7 @@ function ItemForm({
       className="bg-warm-white border border-parchment p-5 mb-4 space-y-3"
     >
       {item && <input type="hidden" name="id" value={item.id} />}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Name *</label>
           <input
@@ -48,7 +48,7 @@ function ItemForm({
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="text-[10px] uppercase tracking-widest text-brown/50 block mb-1">Category *</label>
           <input
@@ -177,7 +177,9 @@ export default function ShopAdminClient({ items, saveItem, removeItem }: Props) 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-serif text-2xl text-mocha">Shop Items ({items.length})</h2>
+        <p className="text-sm text-brown/50">
+          {items.length} item{items.length !== 1 ? "s" : ""}
+        </p>
         <button
           onClick={() => setAdding(true)}
           className="text-xs text-rose border border-rose/50 px-4 py-2 hover:bg-blush transition-colors tracking-widest uppercase cursor-pointer"
@@ -191,10 +193,13 @@ export default function ShopAdminClient({ items, saveItem, removeItem }: Props) 
       )}
 
       <div className="space-y-3">
-        {items.length === 0 && (
-          <p className="text-sm text-brown/30 italic py-8 text-center">
-            No shop items in database yet. Run migrations/002_shop_items.sql to get started.
-          </p>
+        {items.length === 0 && !adding && (
+          <div className="text-center py-16 border border-dashed border-parchment bg-cream/40">
+            <p className="text-brown/50 font-light">No shop items yet.</p>
+            <p className="text-sm text-brown/35 mt-1">
+              Use “+ Add Item” to list your first product.
+            </p>
+          </div>
         )}
         {items.map((item) => (
           <ItemRow key={item.id} item={item} saveItem={saveItem} removeItem={removeItem} />
