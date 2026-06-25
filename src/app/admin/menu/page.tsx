@@ -87,16 +87,9 @@ export default async function AdminMenuPage() {
       <AdminNav active="Menu" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        {/* DB migration notice */}
-        <div className="bg-amber-50 border border-amber-200 px-5 py-4 mb-8 text-sm text-amber-800">
-          <strong className="tracking-wide uppercase text-xs">Before using this page:</strong>
-          <p className="mt-1 font-light">
-            Changes here will take effect once the menu is migrated to the database. Run{" "}
-            <code className="bg-amber-100 px-1 font-mono text-xs">migrations/001_menu_tables.sql</code>{" "}
-            against your Neon database first, then seed the tables from the hardcoded menu data.
-            The public <code className="bg-amber-100 px-1 font-mono text-xs">/menu</code> page still reads
-            from hardcoded arrays until that migration is complete.
-          </p>
+        <div className="flex items-center gap-2 mb-8 text-xs text-brown/40 tracking-wide">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
+          {cards.length} card{cards.length !== 1 ? "s" : ""} · {items.length} item{items.length !== 1 ? "s" : ""} · changes are live immediately
         </div>
 
         {sections.map((section) => (

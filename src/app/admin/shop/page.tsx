@@ -51,14 +51,9 @@ export default async function AdminShopPage() {
       <AdminNav active="Shop" />
 
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <div className="bg-blush border border-parchment px-5 py-4 mb-8 text-sm text-brown">
-          <strong className="tracking-wide uppercase text-xs">Note:</strong>
-          <span className="font-light ml-1">
-            These items appear on the public Shop page. Changes are live immediately once the shop
-            is migrated to the database. Run{" "}
-            <code className="bg-parchment/40 px-1 font-mono text-xs">migrations/002_shop_items.sql</code>{" "}
-            first.
-          </span>
+        <div className="flex items-center gap-2 mb-8 text-xs text-brown/40 tracking-wide">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
+          {items.length} item{items.length !== 1 ? "s" : ""} · changes are live immediately
         </div>
 
         <ShopAdminClient items={items} saveItem={saveItem} removeItem={removeItem} />
