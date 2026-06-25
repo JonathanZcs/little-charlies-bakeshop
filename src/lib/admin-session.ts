@@ -9,6 +9,8 @@ export function createSessionToken(password: string): string {
 
 export function isValidSession(cookieValue: string | undefined): boolean {
   const password = process.env.ADMIN_PASSWORD;
+  // Dev bypass: no password configured + running locally = open access
+  if (!password && process.env.NODE_ENV === "development") return true;
   if (!password || !cookieValue) return false;
   const expected = createSessionToken(password);
   if (expected.length !== cookieValue.length) return false;
