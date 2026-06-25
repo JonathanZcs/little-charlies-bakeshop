@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ShopGrid from "./ShopGrid";
+import { getShopItems } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -7,7 +8,11 @@ export const metadata: Metadata = {
     "Order online from Little Charlie's Bakeshop — brownies, cinnamon rolls, poptarts, macarons, sourdough loaves, cookies, and more. Pickup in Cortland, Ohio.",
 };
 
-export default function ShopPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ShopPage() {
+  const items = await getShopItems();
+
   return (
     <>
       {/* Header */}
@@ -16,9 +21,7 @@ export default function ShopPage() {
         <p className="text-rose/70 text-xs tracking-[0.4em] uppercase mb-2">
           Fresh &amp; Handcrafted
         </p>
-        <p className="font-script text-5xl md:text-6xl text-rose mb-3">
-          Our Shop
-        </p>
+        <p className="font-script text-5xl md:text-6xl text-rose mb-3">Our Shop</p>
         <div className="flex items-center justify-center gap-4 mb-4">
           <div className="h-px w-12 bg-parchment" />
           <span className="text-parchment">&#10022;</span>
@@ -32,7 +35,7 @@ export default function ShopPage() {
       {/* Shop Grid */}
       <section className="py-16 px-6 bg-warm-white">
         <div className="max-w-6xl mx-auto">
-          <ShopGrid />
+          <ShopGrid items={items} />
         </div>
       </section>
 

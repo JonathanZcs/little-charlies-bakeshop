@@ -157,6 +157,14 @@ export async function getMenuItemsForCard(cardId: string): Promise<MenuItem[]> {
   } catch { return []; }
 }
 
+export async function getMenuItems(): Promise<MenuItem[]> {
+  if (!sql) return [];
+  try {
+    const rows = await sql`SELECT * FROM menu_items WHERE visible = true ORDER BY sort_order`;
+    return rows as MenuItem[];
+  } catch { return []; }
+}
+
 export async function getMenuItemsFull(): Promise<MenuItem[]> {
   if (!sql) return [];
   try {

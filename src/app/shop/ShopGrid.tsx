@@ -112,7 +112,7 @@ const hardcodedProducts = [
 ];
 
 export default function ShopGrid({ items }: { items?: ShopItemProp[] }) {
-  const products: ShopItemProp[] = items ?? hardcodedProducts;
+  const products: ShopItemProp[] = items && items.length > 0 ? items : hardcodedProducts;
   const allCategories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
 
   const [active, setActive] = useState("All");

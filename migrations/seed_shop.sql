@@ -1,0 +1,42 @@
+-- Seed shop_items from hardcoded ShopGrid data
+-- Run this after 002_shop_items.sql
+-- Safe to re-run: uses INSERT ... ON CONFLICT DO NOTHING with stable UUIDs
+
+INSERT INTO shop_items (id, name, price, category, image_path, link, sort_order, visible) VALUES
+  ('d4000001-0000-0000-0000-000000000001', 'Mommy & Me Cinnamon Roll Class', '$60.00', 'Classes',
+   '/images/mommy-me-cinnamon-roll-class.webp',
+   'http://www.littlecharliesbakeshop.com/store/p389/Mommy_%26_me_cinnamon_roll_class.html', 1, true),
+  ('d4000002-0000-0000-0000-000000000001', 'Individual Brownie', '$5.00', 'Baked Goods',
+   '/images/brownie.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p385/individual_chocolate_chip_brownie.html', 2, true),
+  ('d4000003-0000-0000-0000-000000000001', 'Jumbo Cinnamon Roll', '$6.00', 'Sourdough',
+   '/images/cinnamon-roll.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p388/jumbo_sourdough_cinnamon_roll_w%2F_icing.html', 3, true),
+  ('d4000004-0000-0000-0000-000000000001', '4-Pack Poptarts', '$16.00', 'Baked Goods',
+   '/images/poptarts.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p387/4pk_poptart.html', 4, true),
+  ('d4000005-0000-0000-0000-000000000001', '4-Pack Jumbo Brownies', '$20.00', 'Baked Goods',
+   '/images/brownie-4pk.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p384/4pk_jumbo_brownies.html', 5, true),
+  ('d4000006-0000-0000-0000-000000000001', 'Individual Cheese Danish', '$4.00', 'Pastries',
+   '/images/danish.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p386/individual_blueberry_cheese_danish.html', 6, true),
+  ('d4000007-0000-0000-0000-000000000001', 'Sourdough Loaf', '$12.00', 'Sourdough',
+   '/images/sourdough-loaf.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p382/sourdough_loaf.html', 7, true),
+  ('d4000008-0000-0000-0000-000000000001', '4-Pack Jumbo Cookies', '$20.00', 'Baked Goods',
+   '/images/cookies-4pk.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p383/4pk_jumbo_cookies.html', 8, true),
+  ('d4000009-0000-0000-0000-000000000001', 'Individual Scone', '$4.00', 'Sourdough',
+   '/images/scone.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p380/individual_sourdough_fig_scone.html', 9, true),
+  ('d4000010-0000-0000-0000-000000000001', '6-Pack French Macarons', '$18.00', 'Macarons',
+   '/images/macarons.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p381/6pk_French_macarons.html', 10, true),
+  ('d4000011-0000-0000-0000-000000000001', 'Banana Bread Loaf', '$18.00', 'Baked Goods',
+   '/images/banana-bread.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p379/Chocolate_chip_banana_bread_loaf_with_walnuts.html', 11, true),
+  ('d4000012-0000-0000-0000-000000000001', 'Sourdough Starter', '$5.00', 'Sourdough',
+   '/images/sourdough-starter.jpg',
+   'http://www.littlecharliesbakeshop.com/store/p377/sourdough_starter.html', 12, true)
+ON CONFLICT (id) DO NOTHING;
