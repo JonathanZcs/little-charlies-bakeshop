@@ -59,6 +59,22 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
 
+      {/* Honeypot — bots autofill this; real users never see it. The API
+          treats any non-empty value as spam and returns success-shaped 200
+          without saving. Off-screen via inline style so Tailwind purge can't
+          drop it; aria-hidden + tabIndex=-1 keep it out of AT/keyboard flow. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, width: 0, overflow: "hidden" }}>
+        <label htmlFor="lc_website">Website (leave blank)</label>
+        <input
+          id="lc_website"
+          name="lc_website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
+      </div>
+
       {/* Inquiry notice */}
       <div className="bg-blush border border-rose/20 px-4 py-3 flex gap-3 items-start">
         <span className="text-rose mt-0.5 shrink-0">ℹ</span>
