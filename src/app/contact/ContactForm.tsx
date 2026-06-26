@@ -132,7 +132,7 @@ export default function ContactForm() {
             type="date"
             required
             min={(() => { const todayET = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }); const [y, m, d] = todayET.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d + 3)).toISOString().split("T")[0]; })()}
-            className={inputClass + " cursor-pointer py-3.5"}
+            className={inputClass + " cursor-pointer py-3.5 h-[50px] appearance-none"}
             onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
           />
         </div>
