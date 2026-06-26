@@ -20,6 +20,15 @@ export async function POST(request: NextRequest) {
     }
 
     const formData = await request.formData();
+
+    // Honeypot — hidden in the form, only bots fill it. Return success-shaped
+    // 200 so the bot thinks the submission worked but we skip downstream work.
+    const honey = (formData.get("lc_website") as string | null)?.trim();
+    if (honey) {
+      console.warn("[contact] honeypot tripped, dropping submission");
+      return NextResponse.json({ success: true });
+    }
+
     const name      = formData.get("name") as string | null;
     const phone     = formData.get("phone") as string | null;
     const email     = formData.get("email") as string | null;
