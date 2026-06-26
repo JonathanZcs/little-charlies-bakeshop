@@ -11,25 +11,41 @@ function isValidSession(cookieValue: string | undefined, password: string): bool
   return timingSafeEqual(Buffer.from(expected), Buffer.from(cookieValue));
 }
 
+// Non-CSP security headers — inert and safe.
+// CSP is deliberately omitted here; it lives on the develop branch and needs
+// preview-environment verification before promoting to prod.
+function applySecurityHeaders(response: NextResponse): NextResponse {
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  response.headers.set(
+    "Strict-Transport-Security",
+    "max-age=63072000; includeSubDomains; preload",
+  );
+  return response;
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (!pathname.startsWith("/admin") || pathname.startsWith("/admin/login")) {
-    return NextResponse.next();
+  // Admin auth gate (unchanged)
+  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
+    const password = process.env.ADMIN_PASSWORD;
+    const session = request.cookies.get(COOKIE_NAME)?.value;
+    if (!password || !isValidSession(session, password)) {
+      const loginUrl = new URL("/admin/login", request.url);
+      loginUrl.searchParams.set("next", pathname);
+      return applySecurityHeaders(NextResponse.redirect(loginUrl));
+    }
   }
 
-  const password = process.env.ADMIN_PASSWORD;
-  const session = request.cookies.get(COOKIE_NAME)?.value;
-
-  if (!password || !isValidSession(session, password)) {
-    const loginUrl = new URL("/admin/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  return NextResponse.next();
+  return applySecurityHeaders(NextResponse.next());
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    // Run on every page + API route but skip Next internals and static assets.
+    "/((?!_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap\\.xml|images/|icons/|file\\.svg|globe\\.svg|window\\.svg|next\\.svg|vercel\\.svg).*)",
+  ],
 };

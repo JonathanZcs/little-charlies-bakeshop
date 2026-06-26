@@ -2,19 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getOrder, updateOrderStatus } from "@/lib/db";
 import { createDepositInvoice } from "@/lib/square";
 import { Resend } from "resend";
+import { isAuthorizedRequest } from "@/lib/admin-session";
 
 const getResend = () => new Resend(process.env.RESEND_API_KEY);
-
-function isAuthorized(req: NextRequest) {
-  const key = req.headers.get("x-admin-key");
-  return key && key === process.env.ADMIN_PASSWORD;
-}
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!isAuthorized(request)) {
+  if (!isAuthorizedRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
