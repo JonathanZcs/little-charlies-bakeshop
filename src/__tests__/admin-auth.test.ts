@@ -1,79 +1,69 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { createHmac, timingSafeEqual } from "crypto";
 
-// Mirrors the API route's isAuthorized check
-function isAuthorized(headerValue: string | null, adminPassword: string | undefined): boolean {
-  if (!adminPassword) return false;
-  return headerValue === adminPassword;
-}
-
-// Mirrors admin-session helpers
+// Mirrors src/lib/admin-session.ts — both header and cookie require the HMAC token.
 const HMAC_PAYLOAD = "lc-admin:v1";
 
 function createSessionToken(password: string): string {
   return createHmac("sha256", password).update(HMAC_PAYLOAD).digest("hex");
 }
 
-function isValidSession(cookieValue: string | undefined, password: string | undefined): boolean {
-  if (!password || !cookieValue) return false;
-  const expected = createSessionToken(password);
-  if (expected.length !== cookieValue.length) return false;
-  return timingSafeEqual(Buffer.from(expected), Buffer.from(cookieValue));
+function safeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
 }
 
-describe("Admin API authorization (x-admin-key header)", () => {
+function isAuthorizedRequest(
+  headerValue: string | null,
+  cookieValue: string | undefined,
+  password: string | undefined,
+): boolean {
+  if (!password) return false;
+  const expected = createSessionToken(password);
+  if (cookieValue && safeEqualHex(expected, cookieValue)) return true;
+  if (headerValue && safeEqualHex(expected, headerValue)) return true;
+  return false;
+}
+
+describe("Admin API authorization (HMAC header OR cookie)", () => {
   const PASSWORD = "hunter2-secret";
+  const TOKEN = createSessionToken(PASSWORD);
 
-  it("allows correct password", () => {
-    expect(isAuthorized(PASSWORD, PASSWORD)).toBe(true);
+  it("accepts valid HMAC token in x-admin-key header", () => {
+    expect(isAuthorizedRequest(TOKEN, undefined, PASSWORD)).toBe(true);
   });
 
-  it("rejects wrong password", () => {
-    expect(isAuthorized("wrong", PASSWORD)).toBe(false);
+  it("accepts valid HMAC token in session cookie", () => {
+    expect(isAuthorizedRequest(null, TOKEN, PASSWORD)).toBe(true);
   });
 
-  it("rejects missing header (null)", () => {
-    expect(isAuthorized(null, PASSWORD)).toBe(false);
-  });
-
-  it("rejects when ADMIN_PASSWORD env var is not set", () => {
-    expect(isAuthorized(PASSWORD, undefined)).toBe(false);
-  });
-
-  it("rejects empty string header", () => {
-    expect(isAuthorized("", PASSWORD)).toBe(false);
-  });
-});
-
-describe("Admin session cookie (HMAC token)", () => {
-  const PASSWORD = "hunter2-secret";
-
-  it("valid token from correct password is accepted", () => {
-    const token = createSessionToken(PASSWORD);
-    expect(isValidSession(token, PASSWORD)).toBe(true);
+  it("rejects raw password sent in x-admin-key header (old insecure format)", () => {
+    expect(isAuthorizedRequest(PASSWORD, undefined, PASSWORD)).toBe(false);
   });
 
   it("rejects raw password stored in cookie (old insecure format)", () => {
-    expect(isValidSession(PASSWORD, PASSWORD)).toBe(false);
+    expect(isAuthorizedRequest(null, PASSWORD, PASSWORD)).toBe(false);
   });
 
   it("rejects token generated with a different password", () => {
     const token = createSessionToken("other-password");
-    expect(isValidSession(token, PASSWORD)).toBe(false);
+    expect(isAuthorizedRequest(token, undefined, PASSWORD)).toBe(false);
   });
 
-  it("rejects undefined cookie value", () => {
-    expect(isValidSession(undefined, PASSWORD)).toBe(false);
+  it("rejects missing header AND missing cookie", () => {
+    expect(isAuthorizedRequest(null, undefined, PASSWORD)).toBe(false);
   });
 
   it("rejects when ADMIN_PASSWORD is not set", () => {
-    const token = createSessionToken(PASSWORD);
-    expect(isValidSession(token, undefined)).toBe(false);
+    expect(isAuthorizedRequest(TOKEN, undefined, undefined)).toBe(false);
+  });
+
+  it("rejects empty string header", () => {
+    expect(isAuthorizedRequest("", undefined, PASSWORD)).toBe(false);
   });
 
   it("rejects tampered token", () => {
-    const token = createSessionToken(PASSWORD);
-    const tampered = token.slice(0, -4) + "0000";
-    expect(isValidSession(tampered, PASSWORD)).toBe(false);
+    const tampered = TOKEN.slice(0, -4) + "0000";
+    expect(isAuthorizedRequest(tampered, undefined, PASSWORD)).toBe(false);
   });
 });

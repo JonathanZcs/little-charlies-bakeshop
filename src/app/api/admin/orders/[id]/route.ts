@@ -2,19 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { getOrder, updateOrderStatus } from "@/lib/db";
 import { createDepositInvoice } from "@/lib/square";
 import { Resend } from "resend";
+import { isAuthorizedRequest } from "@/lib/admin-session";
 
 const getResend = () => new Resend(process.env.RESEND_API_KEY);
 
-function isAuthorized(req: NextRequest) {
-  const key = req.headers.get("x-admin-key");
-  return key && key === process.env.ADMIN_PASSWORD;
-}
+const EMAIL_FROM = "Little Charlie's Bakeshop <orders@littlecharliesbakeshop.com>";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!isAuthorized(request)) {
+  if (!isAuthorizedRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -34,7 +32,7 @@ export async function PATCH(
       const updated = await updateOrderStatus(id, "accepted", { admin_note: note });
       // Send acceptance email to customer
       await getResend().emails.send({
-        from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
+        from: EMAIL_FROM,
         to: process.env.VERCEL_ENV === "production" ? order.customer_email : "jonz0917@yahoo.com",
         subject: "Your Order Inquiry — We'd Love to Help! 🎂",
         html: buildAcceptanceEmail(order.customer_name, order.order_type, note),
@@ -45,7 +43,7 @@ export async function PATCH(
     case "decline": {
       const updated = await updateOrderStatus(id, "declined", { admin_note: note });
       await getResend().emails.send({
-        from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
+        from: EMAIL_FROM,
         to: process.env.VERCEL_ENV === "production" ? order.customer_email : "jonz0917@yahoo.com",
         subject: "Your Order Inquiry — Little Charlie's Bakeshop",
         html: buildDeclineEmail(order.customer_name, order.order_type, note),
