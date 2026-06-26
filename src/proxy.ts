@@ -12,6 +12,35 @@ function isValidSession(cookieValue: string | undefined, password: string): bool
   return timingSafeEqual(Buffer.from(expected), Buffer.from(cookieValue));
 }
 
+// Content Security Policy — kept permissive for inline (Next hydration markers + scripts).
+// va.vercel-scripts.com / vitals.vercel-insights.com cover Vercel Analytics.
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://vitals.vercel-insights.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+function applySecurityHeaders(response: NextResponse): NextResponse {
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  response.headers.set(
+    "Strict-Transport-Security",
+    "max-age=63072000; includeSubDomains; preload",
+  );
+  response.headers.set("Content-Security-Policy", CSP);
+  return response;
+}
+
 export function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
   const { pathname, search } = request.nextUrl;
@@ -60,10 +89,10 @@ export function proxy(request: NextRequest) {
     // Rewrite clean admin URLs → /admin/* so Next.js App Router picks them up
     const rewritten = request.nextUrl.clone();
     rewritten.pathname = rewrittenPath;
-    return NextResponse.rewrite(rewritten);
+    return applySecurityHeaders(NextResponse.rewrite(rewritten));
   }
 
-  return NextResponse.next();
+  return applySecurityHeaders(NextResponse.next());
 }
 
 export const config = {

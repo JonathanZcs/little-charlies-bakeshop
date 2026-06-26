@@ -3,11 +3,22 @@ import { Resend } from "resend";
 import { put } from "@vercel/blob";
 import { createOrder } from "@/lib/db";
 import { sendOrderAlertSMS } from "@/lib/sms";
+import { rateLimitContact, getClientIp } from "@/lib/rate-limit";
 
 const getResend = () => new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit by IP (5 submissions / 10 min). No-op if Upstash env not configured.
+    const limit = await rateLimitContact(getClientIp(request));
+    if (limit && !limit.success) {
+      const retryAfter = Math.max(1, Math.ceil((limit.reset - Date.now()) / 1000));
+      return NextResponse.json(
+        { error: "Too many submissions. Please try again shortly." },
+        { status: 429, headers: { "Retry-After": String(retryAfter) } },
+      );
+    }
+
     const formData = await request.formData();
     const name      = formData.get("name") as string | null;
     const phone     = formData.get("phone") as string | null;
