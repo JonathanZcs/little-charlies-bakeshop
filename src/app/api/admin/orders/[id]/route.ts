@@ -30,7 +30,7 @@ export async function PATCH(
       const updated = await updateOrderStatus(id, "accepted", { admin_note: note });
       // Send acceptance email to customer
       await getResend().emails.send({
-        from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
+        from: "Little Charlie's Bakeshop <orders@littlecharliesbakeshop.com>",
         to: process.env.VERCEL_ENV === "production" ? order.customer_email : "jonz0917@yahoo.com",
         subject: "Your Order Inquiry — We'd Love to Help! 🎂",
         html: buildAcceptanceEmail(order.customer_name, order.order_type, note),
@@ -41,7 +41,7 @@ export async function PATCH(
     case "decline": {
       const updated = await updateOrderStatus(id, "declined", { admin_note: note });
       await getResend().emails.send({
-        from: "Little Charlie's Bakeshop <onboarding@resend.dev>",
+        from: "Little Charlie's Bakeshop <orders@littlecharliesbakeshop.com>",
         to: process.env.VERCEL_ENV === "production" ? order.customer_email : "jonz0917@yahoo.com",
         subject: "Your Order Inquiry — Little Charlie's Bakeshop",
         html: buildDeclineEmail(order.customer_name, order.order_type, note),
