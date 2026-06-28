@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     if (process.env.RESEND_API_KEY) {
       const recipients = process.env.VERCEL_ENV === "production"
         ? ["littlecharliesbakeshop@hotmail.com", "audralmt@gmail.com"]
-        : ["jonz0917@yahoo.com", "audralmt@gmail.com"];
+        : ["jonz0917@yahoo.com"];
       await getResend().emails.send({
         from: "Order Inquiry - Little Charlie's <orders@littlecharliesbakeshop.com>",
         to: recipients,
