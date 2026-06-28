@@ -83,9 +83,12 @@ export async function POST(request: NextRequest) {
 
     // 2. Send notification email to Alexis (skip gracefully if API key not configured)
     if (process.env.RESEND_API_KEY) {
+      const recipients = process.env.VERCEL_ENV === "production"
+        ? ["littlecharliesbakeshop@hotmail.com", "audralmt@gmail.com", "jonz0917@yahoo.com"]
+        : ["jonz0917@yahoo.com", "audralmt@gmail.com"];
       await getResend().emails.send({
         from: "Order Inquiry - Little Charlie's <orders@littlecharliesbakeshop.com>",
-        to: process.env.VERCEL_ENV === "production" ? "littlecharliesbakeshop@hotmail.com" : "jonz0917@yahoo.com",
+        to: recipients,
         replyTo: email as string,
         subject: `Order Inquiry — ${name} (${orderType})`,
         html: buildOrderEmail({ name, phone, email, orderType, eventDateStr, inquiry, imageUrls, orderId: order?.id }),
